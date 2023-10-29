@@ -3,11 +3,16 @@ import prisma from '../../../libs/prismadb'
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from 'bcrypt'
+import GoogleProvider from 'next-auth/providers/google'
 
 const authOptions = {
     adapter: PrismaAdapter(prisma),
     providers:[
         // add more providers if necessary
+        GoogleProvider({
+            clientId: process.env.GOOGLE_ID,
+            clientSecret: process.env.GOOGLE_SECRET,
+        }),
         CredentialsProvider({
             name:"credentials",
             credentials:{
@@ -43,6 +48,15 @@ const authOptions = {
 
         })
     ],
+    callbacks: {
+        async session({session}){
+            return session
+        }, 
+        async signin({profile}){
+            console.log(profile)
+            
+        }
+    },
     secret: process.env.SECRET ,
     session: {
         strategy: "jwt"

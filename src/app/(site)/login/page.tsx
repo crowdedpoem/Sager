@@ -18,7 +18,7 @@ export default function Login() {
 
             useEffect(() => {
                 if (session?.status === 'authenticated') {
-                   router.push('/') 
+                   router.push('/dashboard') 
                 }
             })
 
@@ -106,6 +106,9 @@ export default function Login() {
                 </button>
               </div>
             </form>
+
+            <h1>Sign into Google</h1>
+            <button onClick={()=> signIn('google')} className="bg-red-500 text-white w-full">Sign in </button>
           
             <p className="mt-10 text-center text-sm text-gray-500">
               Not a member?{' '}
