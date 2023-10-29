@@ -10,6 +10,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  type String
+  provider String 
+  providerAccountId String 
+  refresh_token String? @db.String
+  access_token String? @db.String
+  expires_at Int?
+  token_type String?
+  scope String?
+  id_token String? @db.String
+  session_state String?
+
+  user User @relation(fields:[userId], references: [id], onDelete: Cascade )
+
+  @@unique([provider, providerAccountId])
+}
+
 model User {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String?
@@ -24,12 +43,12 @@ model User {
   post       Post?       @relation("Author")
 // savedPosts SavedPost[] @relation("SavedPosts")
   savedPost  SavedPost[]
+  accounts Account[]
 }
 
 model Post {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   userId String @unique @db.ObjectId
-
   user User @relation("Author", fields: [userId], references: [id])
   savedPosts SavedPost[] 
   positions Position[]
@@ -38,13 +57,41 @@ model Post {
 model Position{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   postId String @db.ObjectId
-  startTime Int
+  startTime DateTime
   title String
   description String
-  duration Int 
-
+  duration DateTime
   post Post @relation(fields: [postId], references: [id])
   pros Pro[]
+  cons Con[]
+  timelineEvents TimelineEvent[]
+  dayEvents DayEvent[]
+}
+
+model DayEvent{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  positionId String @db.ObjectId
+  description String 
+  time String
+  title String
+  position Position @relation(fields: [positionId], references: [id])
+
+}
+
+model TimelineEvent{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  positionId String @db.ObjectId
+  startTime DateTime
+  endTime DateTime
+  description String 
+  position Position @relation(fields: [positionId], references: [id])
+}
+
+model Con{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  positionId String @db.ObjectId
+  description String
+  position Position @relation(fields: [positionId], references: [id])
 }
 
 model Pro{
