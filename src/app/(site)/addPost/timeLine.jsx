@@ -1,36 +1,8 @@
 "use client";
 
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from "dayjs";
 
-import * as React from 'react';
-
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Calendar as CalendarIcon } from "lucide-react";
-
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { useState, useEffect } from "react"
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import * as React from "react";
 import { format } from "date-fns";
 import {
   Card,
@@ -45,7 +17,7 @@ import { postSchema } from "@/validators/post";
 import { Inter } from "next/font/google";
 
 import { Button } from "@/components/ui/button";
-import { FormProvider,  useFieldArray, useForm } from "react-hook-form";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -53,16 +25,23 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { SelectSingleEventHandler } from "react-day-picker";
-import Simple from './simple_component';
-import SimpleDate from './simple_date';
+import Simple from "./simple_component";
+import SimpleDate from "./simple_date";
+import DayInTheLifeEvent from "./dayInTheLife";
+import SimpleTime from "./simple_time";
 
-
-export default function TimeLine({ data, control, name }) {
+export default function TimeLine({ data, control, name, location }) {
   const form = useForm({
     defaultValues: {
-      title: data.title || 'title',
-      description: data.description || '',
-      startDate: data.startDate || dayjs()
+      title: data.title || "title",
+      description: data.description || "",
+      startDate: data.startDate || dayjs(),
+      endDate: data.endDate || dayjs(),
+      bottomLine: data.bottomLine || "",
+      // these should be bigger or smaller
+      pros: data.pros || [""],
+      cons: data.cons || [""],
+      dayInTheLife: data.dayInTheLife || [{ startTime: dayjs(), endTime: dayjs(), title: "" }],
     },
   });
   // const form = useForm({
@@ -80,30 +59,99 @@ export default function TimeLine({ data, control, name }) {
   //     dayInTheLife: [{}]
   //   },
   // });
-  const {register} = form
+  const { register } = form;
 
+  const cons = useFieldArray({
+    control,
+    name: `timeline[${name}].cons`,
+  });
 
-  // const pros = useFieldArray({
-  //   control,
-  //   name: "pros",
-  // });
+  const dayInTheLife = useFieldArray({
+    control,
+    name: `timeline[${name}].dayInTheLife`,
+  });
+
+  const pros = useFieldArray({
+    control,
+    name: `timeline[${name}].pros`,
+  });
 
   return (
     <>
-  
-    <Simple data={data.title} control={control} name={`timeline[${name}].title`} />
-      <Simple data={data.description} control={control} name={`timeline[${name}].description`} />
-      {/* <SimpleDate data={data.startDate} control={control} name="startDate"/> */}
+      <Simple
+        data={data.title}
+        control={control}
+        name={`timeline[${name}].title`}
+      />
+      <Simple
+        data={data.description}
+        control={control}
+        name={`timeline[${name}].description`}
+      />
+      <SimpleDate
+        data={data.startDate}
+        control={control}
+        name={`timeline[${name}].startDate`}
+      />
+      <SimpleDate
+        data={data.endDate}
+        control={control}
+        name={`timeline[${name}].endDate`}
+      />
 
-    <h1>{data.title}</h1>
-                  {/* {pros.fields.map(({ id }, index) => {
-                  return (
-                    <Simple key={id} name='Pro' field={register(`pros.${index}.value`)} />
-                    <SimpleDate key={id} field={register(`dates.${index}.value`)}/>
-                  );
-                })} */}
-                {/* add button for more pros */}
-         
+      <Simple
+        data={data.bottomLine}
+        control={control}
+        name={`timeline[${name}].bottomLine`}
+      />
+      <h2>here are the pros</h2>
+      {pros.fields.map((pro, index) => (
+        <Simple
+          key={pro.id}
+          data={pro.value}
+          control={control}
+          name={`timeline[${name}].pros[${index}].description`}
+        />
+      ))}
+      <button type="button" onClick={() => pros.append("")}>
+        add pro
+      </button>
+      <h3>here are the cons</h3>
+      {cons.fields.map((con, index) => (
+        <Simple
+          key={con.id}
+          data={con.value}
+          control={control}
+          name={`timeline[${name}].cons[${index}].description`}
+        />
+      ))}
+    <button type="button" onClick={() => cons.append("")}>
+        add con
+      </button>
+      <h3>Day In the life for the position</h3>
+      {/* {dayInTheLife.fields.map((ditl, index) => (
+        <div     key={ditl.id}>
+          <SimpleTime 
+           data={ditl.startTime}
+           control={control}
+           name={`timeline[${name}].dayInTheLife[${index}].startTime`}
+          />
+             <SimpleTime 
+           data={ditl.endTime}
+           control={control}
+           name={`timeline[${name}].dayInTheLife[${index}].endTime`}
+    
+          
+          />
+        <Simple
+      
+          data={ditl.title}
+          control={control}
+          name={`timeline[${name}].dayInTheLife[${index}].title`}
+        />
+
+</div>
+      ))} */}
     </>
   );
 }

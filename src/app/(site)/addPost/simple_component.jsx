@@ -22,24 +22,22 @@ import { Controller } from "react-hook-form";
 export default function Simple({ data, control, name }) {
   return (
     <>
-    <FormItem>
-      <FormControl>
-        <Controller
-          name={name}
-          control={control}
-          defaultValue={data || ""}
+    <FormField
+          control={form.control}
+          name="username"
           render={({ field }) => (
-            <Input
-              placeholder={name}
-              value={field.value}
-              onChange={field.onChange}
-            />
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is your public display name.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
           )}
         />
-      </FormControl>
-      {/* <FormDescription>This is for the time line</FormDescription> */}
-      <FormMessage />
-    </FormItem>
   </>
   );
 }

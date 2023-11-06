@@ -10,103 +10,89 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Account{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  type String
-  provider String 
-  providerAccountId String 
-  refresh_token String? @db.String
-  access_token String? @db.String
-  expires_at Int?
-  token_type String?
-  scope String?
-  id_token String? @db.String
-  session_state String?
+// model Account {
+//   id                String  @id @default(auto()) @map("_id") @db.ObjectId
+//   userId            String  @db.ObjectId
+//   type              String
+//   provider          String
+//   providerAccountId String
+//   refresh_token     String? @db.String
+//   access_token      String? @db.String
+//   expires_at        Int?
+//   token_type        String?
+//   scope             String?
+//   id_token          String? @db.String
+//   session_state     String?
+//   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user User @relation(fields:[userId], references: [id], onDelete: Cascade )
-
-  @@unique([provider, providerAccountId])
-}
+//   @@unique([provider, providerAccountId])
+// }
 
 model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
   name           String?
-  email          String?   @unique
-  emailVerified  DateTime?
-  image          String?
-  hashedPassword String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  role String?
-
-  post       Post?       @relation("Author")
-// savedPosts SavedPost[] @relation("SavedPosts")
-  savedPost  SavedPost[]
-  accounts Account[]
+  email          String?     @unique
+  // hashedPassword String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  // role           String?
+  post           Post?       @relation("Author")
+  // savedPosts SavedPost[] @relation("SavedPosts")
+  // savedPost      SavedPost[]
+  // accounts       Account[]
 }
 
 model Post {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @unique @db.ObjectId
-  user User @relation("Author", fields: [userId], references: [id])
-  savedPosts SavedPost[] 
-  positions Position[]
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String      @unique @db.ObjectId
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  user       User        @relation("Author", fields: [userId], references: [id])
+  // savedPosts SavedPost[]
+  TimeLines  TimeLine[]
 }
 
-model Position{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  postId String @db.ObjectId
-  startTime DateTime
-  title String
+model TimeLine {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  postId      String     @db.ObjectId
+  startDate   DateTime
+  title       String
   description String
-  duration DateTime
-  post Post @relation(fields: [postId], references: [id])
-  pros Pro[]
-  cons Con[]
-  timelineEvents TimelineEvent[]
-  dayEvents DayEvent[]
+  endDate     DateTime
+  post        Post       @relation(fields: [postId], references: [id])
+  pros        Pro[]
+  cons        Con[]
+  dayEvents   DayEvent[]
 }
 
-model DayEvent{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  positionId String @db.ObjectId
-  description String 
-  time String
-  title String
-  position Position @relation(fields: [positionId], references: [id])
-
-}
-
-model TimelineEvent{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  positionId String @db.ObjectId
-  startTime DateTime
-  endTime DateTime
-  description String 
-  position Position @relation(fields: [positionId], references: [id])
-}
-
-model Con{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  positionId String @db.ObjectId
+model DayEvent {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  TimeLineId  String   @db.ObjectId
   description String
-  position Position @relation(fields: [positionId], references: [id])
+  startTime   DateTime
+  endTime     DateTime
+  title       String
+  TimeLine    TimeLine @relation(fields: [TimeLineId], references: [id])
 }
 
-model Pro{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  positionId String @db.ObjectId
+model Con {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  TimeLineId  String   @db.ObjectId
   description String
-
-  position Position @relation(fields: [positionId], references: [id])
+  TimeLine    TimeLine @relation(fields: [TimeLineId], references: [id])
 }
 
-model SavedPost {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  postId String @db.ObjectId
-
-  post Post @relation(fields: [postId], references: [id])
-  user User @relation(fields: [userId], references: [id])
+model Pro {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  TimeLineId  String   @db.ObjectId
+  description String
+  TimeLine    TimeLine @relation(fields: [TimeLineId], references: [id])
 }
+
+// model SavedPost {
+//   id     String @id @default(auto()) @map("_id") @db.ObjectId
+//   userId String @db.ObjectId
+//   postId String @db.ObjectId
+//   post   Post   @relation(fields: [postId], references: [id])
+//   user   User   @relation(fields: [userId], references: [id])
+// }
