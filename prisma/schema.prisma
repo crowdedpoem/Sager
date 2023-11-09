@@ -10,49 +10,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Account {
-//   id                String  @id @default(auto()) @map("_id") @db.ObjectId
-//   userId            String  @db.ObjectId
-//   type              String
-//   provider          String
-//   providerAccountId String
-//   refresh_token     String? @db.String
-//   access_token      String? @db.String
-//   expires_at        Int?
-//   token_type        String?
-//   scope             String?
-//   id_token          String? @db.String
-//   session_state     String?
-//   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-//   @@unique([provider, providerAccountId])
-// }
+  @@unique([provider, providerAccountId])
+}
 
 model User {
-  id             String      @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?
-  email          String?     @unique
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  email     String?  @unique
   // hashedPassword String?
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   // role           String?
-  post           Post?       @relation("Author")
+  post      Post?    @relation("Author")
   // savedPosts SavedPost[] @relation("SavedPosts")
   // savedPost      SavedPost[]
-  // accounts       Account[]
+  accounts       Account[]
 }
 
 model Post {
-  id         String      @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String      @unique @db.ObjectId
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  user       User        @relation("Author", fields: [userId], references: [id])
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String       @unique @db.ObjectId
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  user        User         @relation("Author", fields: [userId], references: [id])
   // savedPosts SavedPost[]
-  TimeLines  TimeLine[]
+  Experiences Experience[]
 }
 
-model TimeLine {
+model Experience {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
   postId      String     @db.ObjectId
   startDate   DateTime
@@ -66,27 +66,27 @@ model TimeLine {
 }
 
 model DayEvent {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  TimeLineId  String   @db.ObjectId
-  description String
-  startTime   DateTime
-  endTime     DateTime
-  title       String
-  TimeLine    TimeLine @relation(fields: [TimeLineId], references: [id])
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  ExperienceId String     @db.ObjectId
+  description  String
+  startTime    DateTime
+  endTime      DateTime
+  title        String
+  Experience   Experience @relation(fields: [ExperienceId], references: [id])
 }
 
 model Con {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  TimeLineId  String   @db.ObjectId
-  description String
-  TimeLine    TimeLine @relation(fields: [TimeLineId], references: [id])
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  ExperienceId String     @db.ObjectId
+  description  String
+  Experience   Experience @relation(fields: [ExperienceId], references: [id])
 }
 
 model Pro {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  TimeLineId  String   @db.ObjectId
-  description String
-  TimeLine    TimeLine @relation(fields: [TimeLineId], references: [id])
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  ExperienceId String     @db.ObjectId
+  description  String
+  Experience   Experience @relation(fields: [ExperienceId], references: [id])
 }
 
 // model SavedPost {
