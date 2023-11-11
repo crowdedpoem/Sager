@@ -13,6 +13,8 @@ import { IoMdArrowRoundUp } from 'react-icons/io'
 import { MdNightlightRound, MdFeedback } from 'react-icons/md'
 import { FaCog } from 'react-icons/fa'
 
+import { useSession, signOut } from 'next-auth/react'
+
 const sideBarTopData = [
     {
         name: 'Discover',
@@ -84,13 +86,16 @@ const datafooter = [
 ]
 
 export default function Layout() {
+    const { data:session } = useSession()
     return (
         <div>
             <nav className="fixed w-full border-b border-gray-700 h-20 ">
                 <div className="flex items-center justify-start justify-between">
                     <h2 className="mt-1 text-4xl font-bold tracking-light text-white md:text-2xl p-5 pl-20">Sager</h2>
+                    <h1>Hi there {session?.user?.name ?? "log in"}</h1>
+                    <button onClick={() => signOut()}>Sign Out</button>
                     <button type="button" className="rounded-full pr-10" >
-                        <img className="w-10 h-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
+                        <img className="w-10 h-10 rounded-full" src={session?.user?.image ?? "https://flowbite.com/docs/images/people/profile-picture-1.jpg"} alt="user photo" />
                     </button>
                 </div>
             </nav>
