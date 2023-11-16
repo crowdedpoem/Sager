@@ -71,9 +71,6 @@ model DayEvent {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   ExperienceId String     @db.ObjectId
   description  String
-  startTime    DateTime
-  endTime      DateTime
-  title        String
   Experience   Experience @relation(fields: [ExperienceId], references: [id])
 }
 
