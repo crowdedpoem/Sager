@@ -35,6 +35,8 @@ model User {
   // hashedPassword String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  image String?
+  emailVerified String?
   // role           String?
   post      Post?    @relation("Author")
   // savedPosts SavedPost[] @relation("SavedPosts")
