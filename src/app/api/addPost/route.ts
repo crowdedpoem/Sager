@@ -32,7 +32,7 @@ export async function POST(request: Request) {
        }}
       ,
 
-      TimeLines: {
+      Experiences: {
         create: [
           {
             startDate: timeline.startDate,
