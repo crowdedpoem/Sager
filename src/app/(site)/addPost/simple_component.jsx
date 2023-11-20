@@ -1,43 +1,36 @@
 "use client";
 
-import dayjs, { Dayjs } from 'dayjs';
 
-import * as React from 'react';
-import { useForm } from "react-hook-form";
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+  FormControl, FormDescription, FormItem, FormMessage
 } from "@/components/ui/form";
-import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input";
 import { Controller } from "react-hook-form";
 
-
-
-export default function Simple({ data, control, name }) {
+export default function SimpleInput({ data, control, name, label }) {
   return (
     <>
-    <FormField
-          control={form.control}
-          name="username"
+    <div className='mx-5 my-3 w-1/2'>
+    <FormItem>
+    <FormDescription>{label}</FormDescription>
+      <FormControl>
+        <Controller
+          name= {name}
+          control={control}
+          defaultValue={data || ""}
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+            <Input
+              placeholder={label}
+              value={field.value}
+              onChange={field.onChange}
+
+            />
           )}
         />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+    </div>
   </>
   );
 }
