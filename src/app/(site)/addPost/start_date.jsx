@@ -12,9 +12,9 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export default function StartDate({ data, control, name, label, end }) {
   return (
     <>
-      <div className="flex justify-items-stretch">
+      <div className="flex justify-items-stretch ml-5">
         <FormItem>
-          <FormDescription className="m-0 p-0">{label}</FormDescription>
+          <FormDescription className="mt-3">{label}</FormDescription>
           <FormControl>
             <Controller
               name={name}

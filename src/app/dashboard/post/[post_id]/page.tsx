@@ -4,6 +4,8 @@ import ProsAndCons from '@/components/ProsAndCons'
 import React from "react";
 import Timeline from '@/components/TimeLine'
 import Features from '@/components/Features'
+// import { useSearchParams } from 'next/navigation'
+import { getExperiencesFromPostId } from "../../../../../lib/calls";
 
 
 const pros = ['Fast', 'Scalable', 'Flexible'];
@@ -11,11 +13,15 @@ const cons = ['Learning Curve', 'Setup Time', 'Configuration'];
 
 
 export default function Post(
-    params: { post_id: string }
+    { params }: any
 ) {
 
     const [showModal, setShowModal] = React.useState(false);
 
+
+    const post_id = params.post_id
+    const data = getExperiencesFromPostId (post_id);
+    
     return (
         <>
             <section className="">

@@ -8,25 +8,29 @@ type Props = {
 
 const Layout = (props: Props) => {
     return (
-        <div className="min-h-screen h-screen flex flex-col">
+        <>
+            <div className="min-h-screen h-screen flex flex-col">
 
-            <header className="h-20">
-                <NavBar />
-            </header>
+                <header className="h-20">
+                    <NavBar />
+                </header>
 
-            <div className="flex-1 flex flex-row overflow-y-hidden">
-                <main className="flex-1 overflow-y-auto ">
-                    {props.children}
-                </main>
+                <div className="flex-1 flex flex-row overflow-y-hidden">
+                    <main className="flex-1 overflow-y-auto ">
+                        {props.children}
 
-                <nav className="order-first overflow-y-auto border-r border-gray-700">
-                    <Sidebar />
-                </nav>
+                    </main>
+
+                    <nav className="order-first overflow-y-auto border-r border-gray-700">
+                        <Sidebar />
+                    </nav>
+                </div>
+
+                {/* <footer className="border-t border-red-300 p-2">Footer</footer> */}
             </div>
+        </>
 
-            {/* <footer className="border-t border-red-300 p-2">Footer</footer> */}
-        </div>
     )
 }
 
-export default Layout
+export default Layout;
