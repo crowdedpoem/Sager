@@ -9,7 +9,7 @@ import {
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-export default function SimpleDate({ data, control, name, label }) {
+export default function EndDate({ data, control, name, label, start }) {
   return (
     <>
       <div className="flex justify-items-stretch">
@@ -25,6 +25,7 @@ export default function SimpleDate({ data, control, name, label }) {
                   className=""
                   value={field.value}
                   onChange={field.onChange}
+                  minDate={start}
                 />
               )}
             />
