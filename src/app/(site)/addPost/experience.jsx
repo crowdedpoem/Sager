@@ -5,48 +5,48 @@ import SimpleInput from "./simple_input";
 import StartDate from "./start_date";
 import EndDate from "./end_date";
 
-export default function Timeline({ control, name, register, error, values }) {
+export default function Experience({ control, name, register, error, values }) {
   const pros = useFieldArray({
     control,
-    name: `timeline[${name}].pros`,
+    name: `experience[${name}].pros`,
   });
   const cons = useFieldArray({
     control,
-    name: `timeline[${name}].cons`,
+    name: `experience[${name}].cons`,
   });
   const dayEvents = useFieldArray({
     control,
-    name: `timeline[${name}].dayEvents`,
+    name: `experience[${name}].dayEvents`,
   });
   return (
     <>
       <SimpleInput
         control={control}
-        name={`timeline.${name}.title`}
+        name={`experience.${name}.title`}
         register={register}
         label="title"
-        error={error?.timeline?.[name]?.title}
+        error={error?.experience?.[name]?.title}
       />
 
       <SimpleInput
         control={control}
-        name={`timeline.${name}.description`}
+        name={`experience.${name}.description`}
         label="description"
         register={register}
-        error={error?.timeline?.[name]?.description}
+        error={error?.experience?.[name]?.description}
       />
 
       <StartDate
-        data={register(`timeline.${name}.startDate`)}
+        data={register(`experience.${name}.startDate`)}
         control={control}
-        name={`timeline[${name}].startDate`}
+        name={`experience[${name}].startDate`}
         label="Start Date"
         end={values.endDate}
       />
       <EndDate
-        data={register(`timeline.${name}.endDate`)}
+        data={register(`experience.${name}.endDate`)}
         control={control}
-        name={`timeline[${name}].endDate`}
+        name={`experience[${name}].endDate`}
         label="End Date"
         start={values.startDate}
       />
@@ -56,10 +56,10 @@ export default function Timeline({ control, name, register, error, values }) {
         <SimpleInput
           key={pro.id}
           control={control}
-          name={`timeline[${name}].pros[${index}].description`}
+          name={`experience[${name}].pros[${index}].description`}
           label="Pro of Job"
           register={register}
-          error={error?.timeline?.[name]?.pros?.[index]?.description}
+          error={error?.experience?.[name]?.pros?.[index]?.description}
         />
       ))}
       <button type="button" onClick={() => pros.append("")}>
@@ -70,10 +70,10 @@ export default function Timeline({ control, name, register, error, values }) {
         <SimpleInput
           key={con.id}
           control={control}
-          name={`timeline[${name}].cons[${index}].description`}
+          name={`experience[${name}].cons[${index}].description`}
           label="Con of Job"
           register={register}
-          error={error?.timeline?.[name]?.cons?.[index]?.description}
+          error={error?.experience?.[name]?.cons?.[index]?.description}
         />
       ))}
       <button type="button" onClick={() => cons.append("")}>
@@ -86,9 +86,9 @@ export default function Timeline({ control, name, register, error, values }) {
           key={dayEvent.id}
           control={control}
           label="what is something you usually do on the job?"
-          name={`timeline[${name}].dayEvents[${index}].description`}
+          name={`experience[${name}].dayEvents[${index}].description`}
           register={register}
-          error={error?.timeline?.[name]?.dayEvents?.[index]?.description}
+          error={error?.experience?.[name]?.dayEvents?.[index]?.description}
         />
       ))}
       <button type="button" onClick={() => dayEvents.append("")}>

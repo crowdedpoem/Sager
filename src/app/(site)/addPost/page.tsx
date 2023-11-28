@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { experienceSchema } from "@/validators/experience";
-import Timeline from "./timeline";
+import Experience from "./experience";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession, signOut } from 'next-auth/react'
 
@@ -76,7 +76,7 @@ export default function AddPost() {
               const values = getValues();
               return (
                 <div className="" key={id}>
-                  <Timeline
+                  <Experience
                     control={control}
                     name={index}
                     register={register}
@@ -106,7 +106,7 @@ export default function AddPost() {
                       })
                     }
                   >
-                    Add another event in the timeline
+                    Add another event in the experience
                   </button>
                 </div>
               );
