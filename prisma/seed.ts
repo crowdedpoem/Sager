@@ -5,7 +5,8 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-
+  await prisma.user.deletemany();
+  
   const resSan = await prisma.user.create({
     data: sankalp,
   });

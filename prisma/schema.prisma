@@ -8,7 +8,40 @@ generator client {
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
+
+// model User {
+//   id             String    @id @default(auto()) @map("_id") @db.ObjectId
+//   name       String?
+//   email          String?   @unique
+//   emailVerified  DateTime?
+//   image          String?
+//   hashedPassword String?
+//   createdAt      DateTime  @default(now())
+//   updatedAt      DateTime  @updatedAt
+
+//   accounts Account[]
+// }
+
+// model Account {
+//   id                String  @id @default(auto()) @map("_id") @db.ObjectId
+//   userId            String  @db.ObjectId
+//   type              String
+//   provider          String
+//   providerAccountId String
+//   refresh_token     String? @db.String
+//   access_token      String? @db.String
+//   expires_at        Int?
+//   token_type        String?
+//   scope             String?
+//   id_token          String? @db.String
+//   session_state     String?
+
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   @@unique([provider, providerAccountId])
+// }
 
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -23,48 +56,40 @@ model Account {
   scope             String?
   id_token          String? @db.String
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String?
-  email     String?  @unique
-  // hashedPassword String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  image String?
-  emailVerified String?
-  // role           String?
-  post      Post?    @relation("Author")
-  // savedPosts SavedPost[] @relation("SavedPosts")
-  // savedPost      SavedPost[]
-  accounts       Account[]
-}
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-model Post {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String       @unique @db.ObjectId
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  user        User         @relation("Author", fields: [userId], references: [id])
-  // savedPosts SavedPost[]
-  Experiences Experience[]
+  accounts Account[]
+  
+  Experiences Experience[] @relation("Author")
 }
 
 model Experience {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  postId      String     @db.ObjectId
+  userId String @db.ObjectId
   startDate   DateTime
   title       String
   description String
   endDate     DateTime
-  post        Post       @relation(fields: [postId], references: [id])
   pros        Pro[]
   cons        Con[]
   dayEvents   DayEvent[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  user        User         @relation("Author", fields: [userId], references: [id])
 }
 
 model DayEvent {
@@ -88,10 +113,10 @@ model Pro {
   Experience   Experience @relation(fields: [ExperienceId], references: [id])
 }
 
-// model SavedPost {
+// model SavedUser {
 //   id     String @id @default(auto()) @map("_id") @db.ObjectId
 //   userId String @db.ObjectId
-//   postId String @db.ObjectId
-//   post   Post   @relation(fields: [postId], references: [id])
-//   user   User   @relation(fields: [userId], references: [id])
+//   experienceId String @db.ObjectId
+//   experience   Experience   @relation(fields: [experienceId], references: [id])
+//   user   User   @relation(fields: [userId], references: [id]) 
 // }
