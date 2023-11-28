@@ -2,73 +2,53 @@ import { NextResponse } from "next/server";
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-function removeWhitespace(data: any){
-  for(const key in data){
-    if(typeof data[key] === "string"){
-      data[key] = data[key].trim()
-    }
-    else if(typeof data[key] === "object"){
-      data[key] = removeWhitespace(data[key])
+function removeWhitespace(data: any) {
+  for (const key in data) {
+    if (typeof data[key] === "string") {
+      data[key] = data[key].trim();
+    } else if (typeof data[key] === "object") {
+      data[key] = removeWhitespace(data[key]);
     }
   }
-  return data
+  return data;
 }
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const data = removeWhitespace(body)
-  for(const timeline of data){
-    console.log("in post say hi")
-    console.log(timeline.title)
-  
+  const email = body["email"];
+  const data = removeWhitespace(body["experience"]);
+  console.log(data);
+  for (const experience of data) {
+    console.log("in post say hi");
+    console.log(experience.title);
 
-
-
-  const result = await prisma.post.create({
-    data: {
-      user: {create: {
-         name: "thomas",
-         email: "thomas@gmail.com",
-       }}
-      ,
-
-      Experiences: {
-        create: [
-          {
-            startDate: timeline.startDate,
-            title: timeline.title,
-            description: timeline.description,
-            endDate: timeline.endDate,
-            pros: {
-              create: timeline.pros
-            },
-            cons: {
-              create: timeline.cons
-              
-              
-              // [
-              //   {
-              //     description: "con description",
-              //   },
-              // ],
-            },
-             
-            dayEvents: {
-              create: [
-                {
-                  description: "day description",
-                  startTime: "2023-11-01T20:11:12.000Z",
-                  endTime: "2023-11-01T20:11:12.000Z",
-                  title: "day in life title",
-                },
-              ],
-            },
-          },
-        ],
+    const result = await prisma.user.update({
+      where: {
+        email: email,
       },
-    },
-  });
+      data: {
+        Experiences: {
+          create: [
+            {
+              startDate: experience.startDate,
+              title: experience.title,
+              description: experience.description,
+              endDate: experience.endDate,
+              pros: {
+                create: experience.pros,
+              },
+              cons: {
+                create: experience.cons,
+              },
 
+              dayEvents: {
+                create: experience.dayEvents,
+              },
+            },
+          ],
+        },
+      },
+    });
   }
 
   // replace null with result

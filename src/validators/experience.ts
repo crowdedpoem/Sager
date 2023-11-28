@@ -15,6 +15,6 @@ const title = z.object({
   dayEvents: z.array(listSchema),
 });
 
-export const titleSchema = z.object({
-  timeline: z.array(title),
+export const experienceSchema = z.object({
+  experience: z.array(title),
 });

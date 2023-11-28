@@ -5,16 +5,16 @@ import { z } from "zod";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { titleSchema } from "@/validators/title";
+import { experienceSchema } from "@/validators/experience";
 import Timeline from "./timeline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession, signOut } from 'next-auth/react'
 
 export default function AddPost() {
-  type input = z.infer<typeof titleSchema>;
+  type input = z.infer<typeof experienceSchema>;
   const form = useForm<input>({
     defaultValues: {
-      timeline: [
+      experience: [
         {
           title: "",
           description: "",
@@ -26,7 +26,7 @@ export default function AddPost() {
         },
       ],
     },
-    resolver: zodResolver(titleSchema),
+    resolver: zodResolver(experienceSchema),
   });
 
   const {
@@ -38,7 +38,7 @@ export default function AddPost() {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "timeline",
+    name: "experience",
   });
 
   const onFormSubmit = async (data: any) => {
@@ -46,7 +46,7 @@ export default function AddPost() {
     // console.log(data);
 
     var sendToAPI: Record<string, any> = {}
-    sendToAPI["experience"] = data["timeline"]
+    sendToAPI["experience"] = data["experience"]
     sendToAPI["email"] = session?.user?.email ?? "bad";
     console.log(sendToAPI)
 
@@ -81,7 +81,7 @@ export default function AddPost() {
                     name={index}
                     register={register}
                     error={errors}
-                    values={values.timeline[index]}
+                    values={values.experience[index]}
                   />
                   <br />
                   {index === 1 && (
