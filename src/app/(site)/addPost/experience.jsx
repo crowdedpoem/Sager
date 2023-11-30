@@ -62,7 +62,7 @@ export default function Experience({ control, name, register, error, values }) {
           error={error?.experience?.[name]?.pros?.[index]?.description}
         />
       ))}
-      <button type="button" onClick={() => pros.append("")}>
+      <button type="button" onClick={() => pros.append({ description: "" })}>
         add pro
       </button>
       <h3>here are the cons</h3>
@@ -76,7 +76,7 @@ export default function Experience({ control, name, register, error, values }) {
           error={error?.experience?.[name]?.cons?.[index]?.description}
         />
       ))}
-      <button type="button" onClick={() => cons.append("")}>
+      <button type="button" onClick={() => cons.append({ description: "" })}>
         add con
       </button>
       <h3>Day In the life for the position</h3>
@@ -91,7 +91,10 @@ export default function Experience({ control, name, register, error, values }) {
           error={error?.experience?.[name]?.dayEvents?.[index]?.description}
         />
       ))}
-      <button type="button" onClick={() => dayEvents.append("")}>
+      <button
+        type="button"
+        onClick={() => dayEvents.append({ description: "" })}
+      >
         add day in the life
       </button>
     </>
