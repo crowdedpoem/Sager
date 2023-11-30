@@ -10,6 +10,11 @@ export async function GET(request, response) {
     where: {
         userId: userId,
     },
+    include: {
+      pros: true,
+      cons: true,
+      dayEvents: true
+    },
   });
 
   return NextResponse.json(experiences);

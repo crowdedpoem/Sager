@@ -16,9 +16,10 @@ export default function Layout(props: { pros: any; cons: any; }) {
                                 PROS
                             </h2>
                             <div>
-                                {pros?.map((pro: any) => (
-                                    <li key="{pro}" className="text-[15px] list-disc">
-                                        {pro.pro}
+
+                                {pros?.map((pro: any, index: number) => (
+                                    <li key={index} className="text-[15px] list-disc">
+                                        {pro.description}
                                     </li>
                                 ))}
                             </div>

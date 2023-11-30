@@ -6,10 +6,14 @@ import Timeline from '@/components/TimeLine'
 import Features from '@/components/Features'
 // import { useSearchParams } from 'next/navigation'
 import { getExperiencesFromUserId } from "../../../../../lib/calls";
+import { experienceSchema } from "@/validators/experience";
+import { z } from "zod";
 
 
 const pros = ['Fast', 'Scalable', 'Flexible'];
 const cons = ['Learning Curve', 'Setup Time', 'Configuration'];
+
+type Experience = z.infer<typeof experienceSchema>
 
 
 export default async function Post(
@@ -18,9 +22,9 @@ export default async function Post(
 
     const [showModal, setShowModal] = useState(false);
 
-    const [exp, setExp] = useState(null);
+    const [exp, setExp] = useState<Experience | null>(null);
 
-    const handleExp = (e: any) => {
+    const handleExp = (e: Experience) => {
         setExp(e);
     };
 
