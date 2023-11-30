@@ -53,28 +53,36 @@ export default function Experience({ control, name, register, error, values }) {
 
       <h2>here are the pros</h2>
       {pros.fields.map((pro, index) => (
-        <SimpleInput
-          key={pro.id}
-          control={control}
-          name={`experience[${name}].pros[${index}].description`}
-          label="Pro of Job"
-          register={register}
-          error={error?.experience?.[name]?.pros?.[index]?.description}
-        />
+        <div key={pro.id}>
+          <SimpleInput
+            control={control}
+            name={`experience[${name}].pros[${index}].description`}
+            label="Pro of Job"
+            register={register}
+            error={error?.experience?.[name]?.pros?.[index]?.description}
+          />
+          {index !== 0 && (
+            <button onClick={() => remove(index)}>Remove this positive</button>
+          )}
+        </div>
       ))}
       <button type="button" onClick={() => pros.append({ description: "" })}>
         add pro
       </button>
       <h3>here are the cons</h3>
       {cons.fields.map((con, index) => (
-        <SimpleInput
-          key={con.id}
-          control={control}
-          name={`experience[${name}].cons[${index}].description`}
-          label="Con of Job"
-          register={register}
-          error={error?.experience?.[name]?.cons?.[index]?.description}
-        />
+        <div key={con.id}>
+          <SimpleInput
+            control={control}
+            name={`experience[${name}].cons[${index}].description`}
+            label="Con of Job"
+            register={register}
+            error={error?.experience?.[name]?.cons?.[index]?.description}
+          />
+          {index !== 0 && (
+            <button onClick={() => remove(index)}>Remove this negative</button>
+          )}
+        </div>
       ))}
       <button type="button" onClick={() => cons.append({ description: "" })}>
         add con
@@ -82,14 +90,20 @@ export default function Experience({ control, name, register, error, values }) {
       <h3>Day In the life for the position</h3>
 
       {dayEvents.fields.map((dayEvent, index) => (
-        <SimpleInput
-          key={dayEvent.id}
-          control={control}
-          label="what is something you usually do on the job?"
-          name={`experience[${name}].dayEvents[${index}].description`}
-          register={register}
-          error={error?.experience?.[name]?.dayEvents?.[index]?.description}
-        />
+        <div key={dayEvent.id}>
+          <SimpleInput
+            control={control}
+            label="what is something you usually do on the job?"
+            name={`experience[${name}].dayEvents[${index}].description`}
+            register={register}
+            error={error?.experience?.[name]?.dayEvents?.[index]?.description}
+          />
+          {index !== 0 && (
+            <button onClick={() => remove(index)}>
+              Remove this day in the life event
+            </button>
+          )}
+        </div>
       ))}
       <button
         type="button"
