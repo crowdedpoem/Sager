@@ -1,27 +1,35 @@
 "use client";
 
 import ProsAndCons from '@/components/ProsAndCons'
-import React from "react";
+import { useState } from "react";
 import Timeline from '@/components/TimeLine'
 import Features from '@/components/Features'
 // import { useSearchParams } from 'next/navigation'
-import { getExperiencesFromPostId } from "../../../../../lib/calls";
+import { getExperiencesFromUserId } from "../../../../../lib/calls";
 
 
 const pros = ['Fast', 'Scalable', 'Flexible'];
 const cons = ['Learning Curve', 'Setup Time', 'Configuration'];
 
 
-export default function Post(
+export default async function Post(
     { params }: any
 ) {
 
-    const [showModal, setShowModal] = React.useState(false);
+    const [showModal, setShowModal] = useState(false);
 
+    const [exp, setExp] = useState(null);
 
-    const post_id = params.post_id
-    const data = getExperiencesFromPostId (post_id);
-    
+    const handleExp = (e: any) => {
+        setExp(e);
+    };
+
+    const user_id = params.user_id
+    const data = await getExperiencesFromUserId(user_id);
+    const allExperiences = data.data;
+    // console.log(data.data)
+    // handleExp(allExperiences[0])
+
     return (
         <>
             <section className="">
@@ -103,34 +111,37 @@ export default function Post(
                                         </>
                                     ) : null}
 
-                                    <Timeline items={null} />
+                                    <Timeline items={allExperiences} expState={handleExp} />
 
                                 </div>
 
                                 <div className="w-1/2 overflow-auto">
                                     <div className='flex justify-center'>
 
-                                        <div >
-                                            <div className='m-8'>
-                                                <div className="flex justify-between mb-3">
-                                                    <h3 className="text-3xl font-semibold text-gray-700"> Position #1</h3>
-                                                    <h1 className="text-gray-700 pt-1">From (DATE)-To (DATE)</h1>
+                                        {exp != null ? (
+                                            <div >
+                                                <div className='m-8'>
+                                                    <div className="flex justify-between mb-3">
+                                                        <h3 className="text-3xl font-semibold text-gray-700">{exp.title}</h3>
+                                                        <h1 className="text-gray-700 pt-1">From (DATE)-To (DATE)</h1>
+                                                    </div>
+                                                    <p className="mb-4 text-lg font-normal text-gray-700">
+                                                        {exp.description}
+                                                    </p>
                                                 </div>
-                                                <p className="mb-4 text-lg font-normal text-gray-700">
-                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                                    Faucibus ornare suspendisse sed nisi. Cursus metus aliquam eleifend mi in. Enim eu turpis egestas pretium aenean pharetra magna.
-                                                    Pellentesque id nibh tortor id aliquet lectus. Lectus urna duis convallis convallis tellus. Nunc lobortis mattis aliquam faucibus purus in massa tempor.
-                                                    Tellus at urna condimentum mattis. Enim nulla aliquet porttitor lacus luctus. Morbi tristique senectus et netus et.
-                                                </p>
+
+                                                <Features industry={null} travel={null} keywords={null} />
+                                                <ProsAndCons pros={exp.pros} cons={exp.cons} />
+
+                                                <h1 className='text-gray-700 flex items-center justify-center pt-24'>TODO Big picture section</h1>
+                                                <h1 className='text-gray-700 flex items-center justify-center pt-24'>TODO Day in the life section</h1>
+
                                             </div>
+                                        ) : (
+                                            <h1 className="text-black">click on one bruh</h1>
+                                        )
+                                        }
 
-                                            <Features industry={null} travel={null} keywords={null} />
-                                            <ProsAndCons pros={pros} cons={cons} />
-
-                                            <h1 className='text-gray-700 flex items-center justify-center pt-24'>TODO Big picture section</h1>
-                                            <h1 className='text-gray-700 flex items-center justify-center pt-24'>TODO Day in the life section</h1>
-
-                                        </div>
                                     </div>
                                 </div>
                             </div>

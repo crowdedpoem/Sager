@@ -13,9 +13,14 @@ import { IoMdArrowRoundUp } from 'react-icons/io'
 import { MdNightlightRound, MdFeedback } from 'react-icons/md'
 import AddPost from '../../src/app/(site)/addPost/page'
 import { FaCog } from 'react-icons/fa'
+import { useSession, signOut } from 'next-auth/react'
+import Link from 'next/link'
 const App = () => {
     const [open, setOpen] = useState(true);
     const [showModal, setShowModal] = useState(false);
+
+    const { data: session } = useSession()
+
 
 
     return (
@@ -111,6 +116,25 @@ const App = () => {
                             ))}
                         </div>
                     ))}
+
+                    <div className={`px-4 flex justify-center flex-col mb-4 w-full`} >
+                        {session === null ?
+                            <button
+                                className='flex items-center justify-center w-full py-2 my-2 font-semibold text-white bg-red-300 rounded-lg'
+                            >
+                                <Link href='/login'>
+                                    {!open && <p>&gt;-</p>}
+                                    {open && <p>Log In</p>}</Link>
+                            </button> :
+                            <button
+                                className='flex items-center justify-center w-full py-2 my-2 font-semibold text-white bg-red-300 rounded-lg'
+                                onClick={() => signOut()}
+                            >
+                                {!open && <p>&lt;-</p>}
+                                {open && <p>Sign Out</p>}
+                            </button>
+                        }
+                    </div>
                 </div>
 
             </div>

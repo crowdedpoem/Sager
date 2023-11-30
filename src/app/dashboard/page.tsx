@@ -10,73 +10,8 @@ import { getAllExperiences } from "../../../lib/calls";
 
 export default async function Page() {
 
-    // const [posts, setPosts] = useState([
-    //     // {
-    //     //     id: "",
-    //     //     userId: "",
-    //     //     Experiences: [
-    //     //         {
-    //     //             id: "",
-    //     //             postId: "",
-    //     //             startTime: new Date(),
-    //     //             title: "",
-    //     //             description: "",
-    //     //             pros: {},
-    //     //         },
-    //     //     ],
-    //     // },
-    // ]);
-
-
-    // useEffect(() => {
-
-    //     // axios
-    //     //     .get("/api/getPosts")
-    //     //     .then((response) => {
-    //     //         const fetchedPosts = response.data;
-    //     //         console.log(fetchedPosts)
-
-    //     //         // create a promise for each post to fetch its positions
-    //     //         const positionPromises = fetchedPosts.map((post: any) => {
-    //     //             return axios
-    //     //                 .get(`/api/getPositions?postId=${post.id}`)
-    //     //                 .then((response) => ({ postId: post.id, Experiences: response.data }))
-    //     //                 .catch((error) => ({ postId: post.id, Experiences: [], error }));
-    //     //         });
-
-    //     //         console.log(positionPromises);
-
-    //     //         // resolve  the promises
-    //     //         Promise.all(positionPromises).then((results) => {
-    //     //             // combine the posts with their respective positions (by matching post_id)
-    //     //             const postsWithPositions = fetchedPosts.map((post: any) => {
-    //     //                 const postPositions = results.find(
-    //     //                     (result) => result.postId === post.id
-    //     //                 );
-    //     //                 return {
-    //     //                     ...post,
-    //     //                     Experiences: postPositions ? postPositions.Experiences : [],
-    //     //                 };
-    //     //             });
-
-    //     //             // posts_with_positions = postsWithPositions;
-    //     //             setPosts(postsWithPositions)
-    //     //         });
-    //     //     })
-    //     //     .catch((error) => {
-    //     //         console.error("Error fetching posts:", error);
-    //     //     });
-
-    //     axios
-    //         .get("/api/getPosts")
-    //         .then((response) => {
-    //             const fetchedPosts = response.data;
-    //             console.log(fetchedPosts)
-    //         });
-
-    // }, []);
-
-    // const experiences = await getAllExperiences();
+    const experiences = await getAllExperiences();
+    // console.log(experiences)
 
     return (
         <>
@@ -84,33 +19,31 @@ export default async function Page() {
                 <div className=" flex flex-wrap mb-4">
                     <SearchBar />
                 </div>
-                {/* <Suspense fallback={<Loading />}>
+                <Suspense fallback={<Loading />}>
                     <div className="flex flex-wrap -mx-1 lg:-mx-4">
-                        {posts?.map((post: any) => (
+                        {experiences?.map((exp: any) => (
                             <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
                                 <article className="overflow-hidden rounded-lg shadow-lg bg-white">
-                                    <Link href={{ pathname: `/dashboard/post/${post.id}`}}>
-                                        <img
-                                            alt="Placeholder"
-                                            className="block h-auto w-full"
-                                            src="https://picsum.photos/600/400/?random"
-                                        />
+                                    <Link href={{ pathname: `/dashboard/post/${exp.userId}`}}>
+                                        <div className={`bg-purple block h-52 w-full`}>
+
+                                        </div>
                                     </Link>
 
                                     <header className="flex items-center justify-between leading-tight p-2 md:p-4">
                                         <h1 className="text-lg">
-                                            <Link className="no-underline hover:underline text-black" href={`/dashboard/post/${post.id}`}>
-                                                {post.Experiences[post.Experiences.length - 1]?.title}
+                                            <Link className="no-underline hover:underline text-black" href={`/dashboard/post/${exp.userId}`}>
+                                                {exp.title}
                                             </Link>
                                         </h1>
-                                         <p className="text-black text-sm">{post.Experiences[post.Experiences.length - 1]?.duration}</p> 
+                                         <p className="text-black text-sm">{exp.duration}</p> 
                                     </header>
 
-                                    <p className="flex items-center justify-between leading-tight p-2 md:p-4">{post.Experiences[post.Experiences.length - 1]?.description}</p>
+                                    <p className="flex items-center justify-between leading-tight p-2 md:p-4">{exp.description}</p>
 
                                     <footer className="flex items-center justify-between leading-none p-2 md:p-4">
                                         <Link
-                                            href={`/dashboard/post/${post.id}`}
+                                            href={`/dashboard/post/${exp.userId}`}
                                             className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-gray-400 rounded-lg "
                                         >
                                             Read more
@@ -135,7 +68,7 @@ export default async function Page() {
                             </div>
                         ))}
                     </div>
-                </Suspense> */}
+                </Suspense>
 
             </div>
         </>
@@ -143,61 +76,30 @@ export default async function Page() {
     );
 }
 
-// export async function getServerSideProps() {
-//     // const [posts, setPosts] = useState([
-//     //     {
-//     //         id: "",
-//     //         userId: "",
-//     //         Experiences: [
-//     //             {
-//     //                 id: "",
-//     //                 postId: "",
-//     //                 startTime: new Date(),
-//     //                 title: "",
-//     //                 description: "",
-//     //                 pros: {},
-//     //             },
-//     //         ],
-//     //     },
-//     // ]);
+// function getRandomShade(baseColor: string, randomDelta: number = 20): string {
+//     const isHexColor = /^#([0-9A-Fa-f]{3}){1,2}$/i.test(baseColor);
+//     if (!isHexColor) {
+//       throw new Error("Invalid hex color format");
+//     }
+  
+//     const clamp = (value: number) => Math.min(255, Math.max(0, value));
+//     const getRandomValue = (base: number) => clamp(base + Math.round((Math.random() - 0.5) * 2 * randomDelta));
+  
+//     const [baseR, baseG, baseB] = baseColor.match(/\w\w/g)!.map((hex) => parseInt(hex, 16));
+  
+//     const finalR = getRandomValue(baseR);
+//     const finalG = getRandomValue(baseG);
+//     const finalB = getRandomValue(baseB);
+  
+//     const finalColor = `#${finalR.toString(16).padStart(2, "0")}${finalG.toString(16).padStart(2, "0")}${finalB.toString(16).padStart(2, "0")}`;
+//     console.log(finalColor)
+  
+//     return `bg-${finalColor}`;
+//   }
 
-//     let posts_with_positions = null;
-
-//     axios
-//         .get("/api/getPosts")
-//         .then((response) => {
-//             const fetchedPosts = response.data;
-//             console.log(fetchedPosts)
-
-//             // create a promise for each post to fetch its positions
-//             const positionPromises = fetchedPosts.map((post: any) => {
-//                 return axios
-//                     .get(`/api/getPositions?postId=${post.id}`)
-//                     .then((response) => ({ postId: post.id, Experiences: response.data }))
-//                     .catch((error) => ({ postId: post.id, Experiences: [], error }));
-//             });
-
-//             console.log(positionPromises);
-
-//             // resolve  the promises
-//             Promise.all(positionPromises).then((results) => {
-//                 // combine the posts with their respective positions (by matching post_id)
-//                 const postsWithPositions = fetchedPosts.map((post: any) => {
-//                     const postPositions = results.find(
-//                         (result) => result.postId === post.id
-//                     );
-//                     return {
-//                         ...post,
-//                         Experiences: postPositions ? postPositions.Experiences : [],
-//                     };
-//                 });
-
-//                 posts_with_positions = postsWithPositions;
-//             });
-//         })
-//         .catch((error) => {
-//             console.error("Error fetching posts:", error);
-//         });
-
-//     return { props: { posts_with_positions } }
-// }
+  function getRandomShade(): string {
+    const possibleWidths = [800, 700, 600, 500];
+    const randomIndex = Math.floor(Math.random() * possibleWidths.length);
+    console.log(`bg-red-${possibleWidths[randomIndex]}`)
+    return `bg-red-${possibleWidths[randomIndex]}`;
+  }

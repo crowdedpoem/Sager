@@ -10,6 +10,7 @@ export async function GET(request) {
         orderBy: {
             createdAt: "desc", // Order by createdAt field in descending order (assuming there's a createdAt field)
         },
+        distinct: ['userId']
     });
 
     return NextResponse.json(recentPosts);
