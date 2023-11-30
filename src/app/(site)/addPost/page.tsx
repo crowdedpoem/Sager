@@ -84,14 +84,18 @@ export default function AddPost() {
                     values={values.experience[index]}
                   />
                   <br />
-                  {index === 1 && (
+                  {index !== 0 && (
                     <Button onClick={() => remove(index)}>
                       Remove this Experience
                     </Button>
                   )}
 
                   <br />
-                  <button
+                  
+                </div>
+              );
+            })}
+            <button
                     className=""
                     type="button"
                     onClick={() =>
@@ -108,10 +112,7 @@ export default function AddPost() {
                   >
                     Add another event in the experience
                   </button>
-                </div>
-              );
-            })}
-
+<br/>
             <Button type="submit">Submit</Button>
           </form>
         </div>
