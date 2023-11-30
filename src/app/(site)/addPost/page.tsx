@@ -5,13 +5,13 @@ import { z } from "zod";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { experienceSchema } from "@/validators/experience";
+import { multExperiencesSchema } from "@/validators/experience";
 import Experience from "./experience";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession, signOut } from 'next-auth/react'
 
 export default function AddPost() {
-  type input = z.infer<typeof experienceSchema>;
+  type input = z.infer<typeof multExperiencesSchema>;
   const form = useForm<input>({
     defaultValues: {
       experience: [
@@ -26,7 +26,7 @@ export default function AddPost() {
         },
       ],
     },
-    resolver: zodResolver(experienceSchema),
+    resolver: zodResolver(multExperiencesSchema),
   });
 
   const {
