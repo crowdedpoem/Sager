@@ -17,10 +17,10 @@ export async function POST(request: Request) {
   const body = await request.json();
   const email = body["email"];
   const data = removeWhitespace(body["experience"]);
-  console.log(data);
+  // console.log(data);
   for (const experience of data) {
-    console.log("in post say hi");
-    console.log(experience.title);
+    // console.log("in post say hi");
+    // console.log(experience.title);
 
     const result = await prisma.user.update({
       where: {

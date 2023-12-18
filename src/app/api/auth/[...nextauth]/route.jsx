@@ -17,7 +17,7 @@ const authOptions = {
       return session;
     },
     async signin({ profile }) {
-      console.log(profile);
+      // console.log(profile);
 
       try {
         return true;

@@ -12,7 +12,6 @@ export async function getExperiencesFromUserId (userId: string) {
             userId: userId,
         },
     });
-    console.log(fetchedExperiencesPerUserId)
     return fetchedExperiencesPerUserId;
 
 }

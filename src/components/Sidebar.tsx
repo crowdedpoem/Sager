@@ -117,7 +117,7 @@ const App = () => {
                         </div>
                     ))}
 
-                    <div className={`px-4 flex justify-center flex-col mb-4 w-full`} >
+                    <div className={`px-4 flex justify-center flex-col mb-4 w-full mt-36`} >
                         {session === null ?
                             <button
                                 className='flex items-center justify-center w-full py-2 my-2 font-semibold text-white bg-red-300 rounded-lg'
@@ -152,23 +152,18 @@ const sideBarTopData = [
                 title: 'Popular',
                 icon: AiFillFire,
             },
-            {
-                title: 'Most Upvoted',
-                icon: IoMdArrowRoundUp,
-            },
-            {
-                title: 'Best Discussions',
-                icon: AiFillMessage,
-            },
+            // {
+            //     title: 'Most Upvoted',
+            //     icon: IoMdArrowRoundUp,
+            // },
+            // {
+            //     title: 'Best Discussions',
+            //     icon: AiFillMessage,
+            // },
             {
                 title: 'Search',
                 icon: BsSearch,
             },
-        ]
-    },
-    {
-        name: 'Manage',
-        items: [
             {
                 title: 'Bookmarks',
                 icon: BsBookmarkFill,
@@ -177,14 +172,27 @@ const sideBarTopData = [
                 title: 'Reading history',
                 icon: BsEyeFill,
             },
-            {
-                title: 'Focus Mode',
-                icon: MdNightlightRound,
-            },
-            {
-                title: 'Customize',
-                icon: FaCog,
-            },
+        ]
+    },
+    {
+        name: 'Manage',
+        items: [
+            // {
+            //     title: 'Bookmarks',
+            //     icon: BsBookmarkFill,
+            // },
+            // {
+            //     title: 'Reading history',
+            //     icon: BsEyeFill,
+            // },
+            // {
+            //     title: 'Focus Mode',
+            //     icon: MdNightlightRound,
+            // },
+            // {
+            //     title: 'Customize',
+            //     icon: FaCog,
+            // },
         ]
     },
 ]
@@ -198,18 +206,18 @@ const datafooter = [
                 title: 'Docs',
                 icon: BsBookmarkFill,
             },
-            {
-                title: 'Changelog',
-                icon: BsTerminalFill,
-            },
+            // {
+            //     title: 'Changelog',
+            //     icon: BsTerminalFill,
+            // },
             {
                 title: 'Feedback',
                 icon: MdFeedback,
             },
-            {
-                title: 'Invite people',
-                icon: BsPeopleFill,
-            },
+            // {
+            //     title: 'Invite people',
+            //     icon: BsPeopleFill,
+            // },
         ]
     },
 ]

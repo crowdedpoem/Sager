@@ -13,7 +13,7 @@ export default function TimeLine(props: { items: any, expState: any }) {
                 {experiences?.map((exp: any, index:number) => (
                     <li className="mb-10 ml-4" key={index}>
                         <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-purple "></div>
-                        <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">February 2022</time>
+                        <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{exp.startDate.substring(0, exp.startDate.indexOf("T"))}</time>
                         <h3 className="text-lg font-semibold text-gray-700">{exp.title}</h3>
                         <p className="mb-4 text-base font-normal text-gray-700">
                             {exp.description}

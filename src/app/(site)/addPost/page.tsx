@@ -42,15 +42,15 @@ export default function AddPost() {
   });
 
   const onFormSubmit = async (data: any) => {
-    console.log("SUBMIT BUTTON");
+    // console.log("SUBMIT BUTTON");
     // console.log(data);
 
     var sendToAPI: Record<string, any> = {}
     sendToAPI["experience"] = data["experience"]
     sendToAPI["email"] = session?.user?.email ?? "bad";
-    console.log(sendToAPI)
+    // console.log(sendToAPI)
 
-        try {
+    try {
       await fetch("/api/addPost", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -61,58 +61,63 @@ export default function AddPost() {
     }
   };
 
-  const { data:session } = useSession()
+  const { data: session } = useSession()
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <p>{JSON.stringify(session)}</p>
+      {/* <p>{JSON.stringify(session)}</p> */}
       <FormProvider {...form}>
         <div>
           <form
             onSubmit={form.handleSubmit(onFormSubmit)}
             className="space-y-3"
           >
-            {fields.map(({ id }, index) => {
-              const values = getValues();
-              return (
-                <div className="" key={id}>
-                  <Experience
-                    control={control}
-                    name={index}
-                    register={register}
-                    error={errors}
-                    values={values.experience[index]}
-                  />
-                  <br />
-                  {index !== 0 && (
-                    <Button onClick={() => remove(index)}>
-                      Remove this Experience
-                    </Button>
-                  )}
+            <div className="container">
+              {fields.map(({ id }, index) => {
 
-                  <br />
-                  
-                </div>
-              );
-            })}
+                const values = getValues();
+                return (
+                  <div className="block max-w bg-white border border-2 border-gray-500 rounded-lg shadow" key={id}>
+                    <Experience
+                      control={control}
+                      name={index}
+                      register={register}
+                      error={errors}
+                      values={values.experience[index]}
+                    />
+                    <br />
+                    {index !== 0 && (
+                      <button onClick={() => remove(index)} className="">
+                        <img className="w-11 h-11" src="https://static.vecteezy.com/system/resources/previews/016/964/110/original/eps10-red-garbage-or-trash-can-solid-icon-or-logo-isolated-on-white-background-delete-or-rubbish-basket-symbol-in-a-simple-flat-trendy-modern-style-for-your-website-design-and-mobile-app-vector.jpg" alt="" />
+                      </button>
+                    )}
+
+                    <br />
+
+                  </div>
+                );
+              })}
+            </div>
+
+
             <button
-                    className=""
-                    type="button"
-                    onClick={() =>
-                      append({
-                        title: "",
-                        description: "",
-                        startDate: dayjs(),
-                        endDate: dayjs(),
-                        pros: [{ description: "" }],
-                        cons: [{ description: "" }],
-                        dayEvents: [{ description: "" }],
-                      })
-                    }
-                  >
-                    Add another event in the experience
-                  </button>
-<br/>
+              className="border border-dashed border-2 w-full border-sky-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+              type="button"
+              onClick={() =>
+                append({
+                  title: "",
+                  description: "",
+                  startDate: dayjs(),
+                  endDate: dayjs(),
+                  pros: [{ description: "" }],
+                  cons: [{ description: "" }],
+                  dayEvents: [{ description: "" }],
+                })
+              }
+            >
+              Add Another Event 
+            </button>
+            <br />
             <Button type="submit">Submit</Button>
           </form>
         </div>
