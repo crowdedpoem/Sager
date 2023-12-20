@@ -4,14 +4,24 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function GET(request) {
-    const recentPosts = await prisma.experience.findMany({
-        take: 10, // Limit the result to 10 objects
+export async function GET(request, response) {
+    let isDistinctParam = request.nextUrl.searchParams.get("isDistinct");
+    let isDistinct = isDistinctParam === "true";
+
+    let query = {
+        take: 10,
         orderBy: {
-            createdAt: "desc", // Order by createdAt field in descending order (assuming there's a createdAt field)
-        },
-        distinct: ['userId']
-    });
+            createdAt: "desc",
+        }
+    };
+
+    // Add the distinct property to the query object only if isDistinct is true
+    if (isDistinct) {
+        query.distinct = ['userId'];
+    }
+
+    const recentPosts = await prisma.experience.findMany(query);
+
 
     return NextResponse.json(recentPosts);
 }

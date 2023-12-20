@@ -1,9 +1,31 @@
 import axios from "axios";
 
 export async function getAllExperiences() {
-    const fetchedExperiences = await axios.get("http://localhost:3000/api/getPosts").then((response) => response.data);
+    const allDistinctExperiences = await axios.get(`http://localhost:3000/api/getPosts`, {
+        params : {
+            isDistinct: true,
+        }
+    });
 
-    return fetchedExperiences;
+    return allDistinctExperiences.data;
+}
+
+export async function getFilteredExperinces(query: string) {
+    const allExperiences = await axios.get(`http://localhost:3000/api/getPosts`, {
+        params : {
+            isDistinct: false,
+        }
+    });
+
+    // filter per query
+    const filterdExperiences = allExperiences.data.filter((exp: any) => exp.description?.includes(query));
+
+    
+    //get unique per userId
+    return Object.values(
+        filterdExperiences.reduce((acc: any, obj: any) => ({ ...acc, [obj.userId]: obj }), {})
+    );
+
 }
 
 export async function getExperiencesFromUserId (userId: string) {
