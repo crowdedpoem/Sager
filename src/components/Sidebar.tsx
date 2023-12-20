@@ -21,6 +21,10 @@ const App = () => {
 
     const { data: session } = useSession()
 
+    const handleModalState = (e: boolean) => {
+        setShowModal(e);
+    };
+
 
 
     return (
@@ -50,34 +54,19 @@ const App = () => {
                         <>
                             <div
                                 className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                                <div className="relative w-full max-w-7xl max-h-full">
+                                <div className="relative w-fit max-w-7xl h-full">
                                     {/*content*/}
-                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                    <div className="border-0 rounded-lg shadow-lg flex flex-col w-fit bg-white outline-none focus:outline-none">
                                         {/*header*/}
                                         <div className="flex items-start sticky top-0 overflow-hidden bg-white justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                                             <h3 className="text-3xl font-semibold">
-                                                Add an Experince
+                                                Add Your Experinces
                                             </h3>
                                         </div>
                                         {/*body*/}
-                                        <AddPost />
+                                        <AddPost toggleModal={handleModalState}/>
                                         {/*footer*/}
-                                        <div className="flex items-center sticky bottom-0 bg-white overflow-hidden justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-                                            <button
-                                                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                type="button"
-                                                onClick={() => setShowModal(false)}
-                                            >
-                                                Cancel
-                                            </button>
-                                            <button
-                                                className="bg-purple text-white font-bold w-24 uppercase text-sm px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                type="button"
-                                                onClick={() => setShowModal(false)}
-                                            >
-                                                Add
-                                            </button>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
