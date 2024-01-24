@@ -1,9 +1,10 @@
 "use client"
 import { useSession } from 'next-auth/react'
+import { auth } from '@/auth'
 import Link from 'next/link'
 
-export default function Layout() {
-    const { data:session } = useSession()
+export default async function Layout() {
+    const session = await auth()
     return (
         <nav className="fixed w-full border-b border-gray-700">
             <div className="flex items-center justify-start justify-between">
