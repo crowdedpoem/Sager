@@ -1,4 +1,3 @@
-"use client"
 import { useSession } from 'next-auth/react'
 import { auth } from '@/auth'
 import Link from 'next/link'
