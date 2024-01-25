@@ -24,7 +24,10 @@ export default function EndDate({ data, control, name, label, start }) {
                 <DatePicker
                   className=""
                   value={field.value}
-                  onChange={field.onChange}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    localStorage.setItem(name, e);
+                  }}
                   minDate={start}
                 />
               )}

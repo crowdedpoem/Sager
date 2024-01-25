@@ -24,7 +24,10 @@ export default function StartDate({ data, control, name, label, end }) {
                 <DatePicker
                   className=""
                   value={field.value}
-                  onChange={field.onChange}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    localStorage.setItem(name, e);
+                  }}
                   maxDate={end}
                 />
               )}

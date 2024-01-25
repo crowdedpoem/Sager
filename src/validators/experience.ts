@@ -4,7 +4,7 @@ const listSchema = z.object({
   description: z.string().min(2, { message: "enter a longer title" }).max(100),
 });
 
-const title = z.object({
+export const singleExperience = z.object({
   title: z.string().min(2, { message: "enter a longer title" }).max(100),
   description: z.string().min(2, { message: "more words" }),
   // validating dates on the ui DatePickers using maxDate & minDate
@@ -16,5 +16,5 @@ const title = z.object({
 });
 
 export const experienceSchema = z.object({
-  experience: z.array(title),
+  experience: z.array(singleExperience),
 });

@@ -25,8 +25,11 @@ export default function SimpleInput({ control, name, label, register, error }) {
                   <Input
                     placeholder={label}
                     value={field.value}
-                    onChange={field.onChange}
                     register={register(name)}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      localStorage.setItem(name, e.target.value);
+                    }}
                   />
                   {error?.message && <div>{error?.message}</div>}
                 </>
