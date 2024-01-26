@@ -4,12 +4,16 @@ import ProsAndCons from '@/components/ProsAndCons'
 import { useState } from "react";
 import Timeline from '@/components/TimeLine'
 import Features from '@/components/Features'
-// import { useSearchParams } from 'next/navigation'
+import DayInTheLife from '@/components/DayInTheLife';
 import { getExperiencesFromUserId } from "../../../../../lib/calls";
+import { experienceSchema } from "@/validators/experience";
+import { z } from "zod";
 
 
 const pros = ['Fast', 'Scalable', 'Flexible'];
 const cons = ['Learning Curve', 'Setup Time', 'Configuration'];
+
+type Experience = z.infer<typeof experienceSchema>
 
 
 export default async function Post(
@@ -18,9 +22,9 @@ export default async function Post(
 
     const [showModal, setShowModal] = useState(false);
 
-    const [exp, setExp] = useState(null);
+    const [exp, setExp] = useState<Experience | null>(null);
 
-    const handleExp = (e: any) => {
+    const handleExp = (e: Experience) => {
         setExp(e);
     };
 
@@ -52,9 +56,9 @@ export default async function Post(
                                         <>
                                             <div
                                                 className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                                                <div className="relative w-full max-w-7xl max-h-full">
+                                                <div className="relative w-fit max-w-7xl max-h-full">
                                                     {/*content*/}
-                                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-fit bg-white outline-none focus:outline-none">
                                                         {/*header*/}
                                                         <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                                                             <h3 className="text-3xl font-semibold">
@@ -123,7 +127,7 @@ export default async function Post(
                                                 <div className='m-8'>
                                                     <div className="flex justify-between mb-3">
                                                         <h3 className="text-3xl font-semibold text-gray-700">{exp.title}</h3>
-                                                        <h1 className="text-gray-700 pt-1">From (DATE)-To (DATE)</h1>
+                                                        <h1 className="text-gray-700 pt-1">From {exp.startDate.substring(0, exp.startDate.indexOf("T"))} To {exp.endDate.substring(0, exp.startDate.indexOf("T"))}</h1>
                                                     </div>
                                                     <p className="mb-4 text-lg font-normal text-gray-700">
                                                         {exp.description}
@@ -133,8 +137,8 @@ export default async function Post(
                                                 <Features industry={null} travel={null} keywords={null} />
                                                 <ProsAndCons pros={exp.pros} cons={exp.cons} />
 
-                                                <h1 className='text-gray-700 flex items-center justify-center pt-24'>TODO Big picture section</h1>
-                                                <h1 className='text-gray-700 flex items-center justify-center pt-24'>TODO Day in the life section</h1>
+                                                <h1 className='font-big-shoulders-display text-2xl pb-3 flex text-gray-700 flex items-center justify-center pt-24'>TODO Big picture section</h1>
+                                                <DayInTheLife items={exp.dayEvents} />
 
                                             </div>
                                         ) : (

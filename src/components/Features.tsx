@@ -18,7 +18,7 @@ export default function Layout(props: { industry: any, travel: any, keywords: an
                     <div className="p-10 border-t-2 border-b-2 border-purple justify-center items-center flex flex-col">
 
                         <div className='flex space-x-2 '>
-                            <h2 className="font-big-shoulders-display text-3xl pb-3 flex">
+                            <h2 className="font-big-shoulders-display text-2xl pb-3 flex">
                                 Industry
                             </h2>
                             <BsFillBagFill />
@@ -34,7 +34,7 @@ export default function Layout(props: { industry: any, travel: any, keywords: an
                     </div>
                     <div className="p-10 border-2 border-purple justify-center items-center flex flex-col">
                         <div className='flex space-x-2 '>
-                            <h2 className="font-big-shoulders-display text-3xl pb-3 flex">
+                            <h2 className="font-big-shoulders-display text-2xl pb-3 flex">
                                 Travelling
                             </h2>
                             <BsFillAirplaneFill />
@@ -49,7 +49,7 @@ export default function Layout(props: { industry: any, travel: any, keywords: an
                     </div>
                     <div className="p-10  border-t-2 border-b-2 border-purple justify-center items-center flex flex-col">
                         <div className='flex space-x-2 '>
-                            <h2 className="font-big-shoulders-display text-3xl pb-3 flex">
+                            <h2 className="font-big-shoulders-display text-2xl pb-3 flex">
                                 Keywords
                             </h2>
                             <PiMagnifyingGlassBold />
