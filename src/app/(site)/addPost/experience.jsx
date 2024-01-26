@@ -55,7 +55,7 @@ export default function Experience({ control, name, register, error, values }) {
                     />
                 </div>
 
-                <div className=" ">
+                <div className="row-span-5">
                     <div>
                         <Pros
                             pros={pros}
@@ -68,6 +68,7 @@ export default function Experience({ control, name, register, error, values }) {
                     </div>
                 </div>
 
+                <div>
                 <DayEvent
                     dayEvents={dayEvents}
                     control={control}
@@ -75,6 +76,8 @@ export default function Experience({ control, name, register, error, values }) {
                     register={register}
                     error={error}
                 />
+                </div>
+                
             </div>
         </>
     );

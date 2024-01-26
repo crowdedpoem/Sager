@@ -19,9 +19,8 @@ export default function DayEvent({
 }) {
     return (
         <>
-            <div className="-mt-28">
-                <label className="block mb-2 text-md font-medium text-gray-900 ml-5">
-                    Day In the life for the Position
+                <label className="block text-md font-medium text-gray-900 ml-4 -mb-3 m-5">
+                    Day In the life for the Position:
                 </label>
                 {dayEvents.fields.map((dayEvent, index) => (
                     <div className="">
@@ -59,7 +58,7 @@ export default function DayEvent({
                                 onClick={() => dayEvents.remove(index)}
                                 className=""
                             >
-                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full ">
+                                <span class="bg-red-100 text-red-800 text-xs font-medium ml-2 px-2.5 py-0.5 rounded-full ">
                                     Remove
                                 </span>
                             </button>
@@ -67,54 +66,14 @@ export default function DayEvent({
                         </div>
                         
                     </div>
-                    // <div className="flex flex-row ">
-                    //     <div key={dayEvent.id} className="flex flex-col">
-                    //         <SimpleInput
-                    //             control={control}
-                    //             name={`experience[${name}].dayEvents[${index}].description`}
-                    //             label=""
-                    //             register={register}
-                    //             error={
-                    //                 error?.experience?.[name]?.dayEvents?.[index]
-                    //                     ?.description
-                    //             }
-                    //             placeholder={"Title"}
-                    //             styles={"h-4 w-full"}
-                    //         />
-                    //         <SimpleInput
-                    //             control={control}
-                    //             name={`experience[${name}].dayEvents[${index}].description`}
-                    //             label=""
-                    //             register={register}
-                    //             error={
-                    //                 error?.experience?.[name]?.dayEvents?.[index]
-                    //                     ?.description
-                    //             }
-                    //             placeholder={"Further Details"}
-                    //             further_details={true}
-                    //         />
-                    //     </div>
-
-                    //     {index !== 0 && (
-                    //         <button
-                    //             onClick={() => cons.remove(index)}
-                    //             className=""
-                    //         >
-                    //             <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full ">
-                    //                 Remove
-                    //             </span>
-                    //         </button>
-                    //     )}
-                    // </div>
                 ))}
                 <button
                     type="button"
                     onClick={() => dayEvents.append({ description: "" })}
-                    className="border border-dashed border-2 w-1/2 border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 ml-5"
+                    className="border border-dashed border-2 w-1/2 border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 ml-5 mt-5"
                 >
                     Add
                 </button>
-            </div>
         </>
     );
 }

@@ -10,7 +10,7 @@ import Experience from "./experience";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession, signOut } from 'next-auth/react'
 
-export default function AddPost() {
+export default function AddPost(props : {toggleModal: any}) {
   type input = z.infer<typeof multExperiencesSchema>;
   const form = useForm<input>({
     defaultValues: {
@@ -42,13 +42,9 @@ export default function AddPost() {
   });
 
   const onFormSubmit = async (data: any) => {
-    // console.log("SUBMIT BUTTON");
-    // console.log(data);
-
     var sendToAPI: Record<string, any> = {}
     sendToAPI["experience"] = data["experience"]
     sendToAPI["email"] = session?.user?.email ?? "bad";
-    // console.log(sendToAPI)
 
     try {
       await fetch("/api/addPost", {
@@ -62,6 +58,8 @@ export default function AddPost() {
   };
 
   const { data: session } = useSession()
+
+  let modalState = props.toggleModal;
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -77,7 +75,7 @@ export default function AddPost() {
 
                 const values = getValues();
                 return (
-                  <div className="block max-w bg-white border border-2 border-gray-500 rounded-lg shadow" key={id}>
+                  <div className="block w-fit bg-white border border-2 border-gray-500 rounded-lg shadow m-5" key={id}>
                     <Experience
                       control={control}
                       name={index}
@@ -115,10 +113,25 @@ export default function AddPost() {
                 })
               }
             >
-              Add Another Event 
+              Add Another Event
             </button>
             <br />
-            <Button type="submit">Submit</Button>
+            <div className="flex items-center sticky bottom-0 bg-white overflow-hidden justify-end p-6 mt-5 border-t border-solid border-gray-200 rounded-b">
+              <button
+                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={() => {modalState(false)}}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-purple text-white font-bold w-24 uppercase text-sm px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={() => {modalState(false)}}
+              >
+                Add
+              </button>
+            </div>
           </form>
         </div>
       </FormProvider>
