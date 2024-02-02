@@ -1,34 +1,48 @@
 "use client";
 
-import ProsAndCons from '@/components/ProsAndCons'
+import Features from '@/components/Features';
+import ProsAndCons from '@/components/ProsAndCons';
+import Timeline from '@/components/TimeLine';
 import { useState } from "react";
-import Timeline from '@/components/TimeLine'
-import Features from '@/components/Features'
 // import { useSearchParams } from 'next/navigation'
 import { getExperiencesFromUserId } from "../../../../../lib/calls";
+import useSWR from 'swr';
+import { useEffect } from 'react';
+
+type Experience = {
+    id: string,
+    userId: string,
+    startDate: string,
+    title: string,
+    description: string,
+    endDate: string,
+    createdAt: string,
+    updatedAt: string,
+    pros: string[],
+    cons: string[]
+}
 
 
-const pros = ['Fast', 'Scalable', 'Flexible'];
-const cons = ['Learning Curve', 'Setup Time', 'Configuration'];
-
-
-export default async function Post(
+export default function Post(
     { params }: any
 ) {
 
+    const { data, error } = useSWR(params.user_id, () => getExperiencesFromUserId(params.user_id));
+    const allExperiences = data;
+
     const [showModal, setShowModal] = useState(false);
 
-    const [exp, setExp] = useState(null);
+    const [exp, setExp] = useState<Experience | null>(null);
 
     const handleExp = (e: any) => {
         setExp(e);
     };
 
-    const user_id = params.user_id
-    const data = await getExperiencesFromUserId(user_id);
-    const allExperiences = data.data;
-    // console.log(data.data)
-    // handleExp(allExperiences[0])
+    useEffect(()=>{
+        if(!!allExperiences && exp === null){
+            setExp(allExperiences[0])
+        }
+    })
 
     return (
         <>
