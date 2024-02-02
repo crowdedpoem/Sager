@@ -1,11 +1,14 @@
 import axios from "axios";
 
-export async function removePost(userId: string){
-    const delExperience = await axios.delete("http://localhost:3000/api/removePost", {params: {
+export function removePost(userId: string){
+    return axios.delete("http://localhost:3000/api/removePost"
+    , {
+        params: {
         userId: userId,
-    },}).then((response) => response.data)
+    }
+    ,}
+    ).then((response) => response.data)
 
-    return delExperience
 }
 
 export async function getAllExperiences() {
