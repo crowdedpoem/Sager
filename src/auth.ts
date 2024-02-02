@@ -12,6 +12,10 @@ export const {
   signOut
 } = NextAuth({
   callbacks: {
+    async signIn({user}){
+      // return false if user is removed by admin
+      return true
+    },
     async jwt({ token, user, account, profile }) {
       const dbUser = await prisma.user.findFirst({
         where: {
@@ -19,25 +23,18 @@ export const {
         }
       })
     if(!dbUser){
-      token.id = user!.id 
       return token
     }
-    
-    // console.log('### JWT CALLBACK ###')
-    // console.log('token: ', token)
-    // console.log('account: ', account)
-    return {
-      
-      name: dbUser.name,
-      image: dbUser.image,
-      email:dbUser.email,
-      role: dbUser.role
-    };
+    // console.log("db user " + JSON.stringify(dbUser))
+    token.role = dbUser.role
+    token.id = dbUser.id 
+    return token
   },
   async session({ session, token }) {
     if(token && session.user){
       session.user.image = token.image
       session.user.role = token.role
+      session.user.id = token.id
       
     }
     return session;
