@@ -28,6 +28,7 @@ export const {
     // console.log("db user " + JSON.stringify(dbUser))
     token.role = dbUser.role
     token.id = dbUser.id 
+    token.image = dbUser.image
     return token
   },
   async session({ session, token }) {
