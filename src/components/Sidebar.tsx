@@ -11,7 +11,7 @@ import {
 import { AiFillFire, AiFillMessage, } from 'react-icons/ai'
 import { IoMdArrowRoundUp } from 'react-icons/io'
 import { MdNightlightRound, MdFeedback } from 'react-icons/md'
-import AddPost from '../../src/app/(site)/addPost/page'
+import AddPost from '../../src/app/addPost/page'
 import { FaCog } from 'react-icons/fa'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'

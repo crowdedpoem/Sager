@@ -34,10 +34,10 @@ function listFromLocal(name: string) {
 }
 
 function initForm(): input {
-  console.log(listFromLocal("experience[0].pros"));
+  // console.log(listFromLocal("experience[0].pros"));
   let arr = []
   const numExp = Number(localStorage.getItem("numExperience"))
-  console.log("num exp is " + numExp)
+  // console.log("num exp is " + numExp)
   for(let i = 0; i < numExp; i++){
     const jsonData: singleExp = {
     
