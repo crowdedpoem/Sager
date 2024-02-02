@@ -95,28 +95,28 @@ model Experience {
   dayEvents   DayEvent[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  user        User         @relation("Author", fields: [userId], references: [id])
+  user        User         @relation("Author", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model DayEvent {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   ExperienceId String     @db.ObjectId
   description  String
-  Experience   Experience @relation(fields: [ExperienceId], references: [id])
+  Experience   Experience @relation(fields: [ExperienceId], references: [id], onDelete: Cascade)
 }
 
 model Con {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   ExperienceId String     @db.ObjectId
   description  String
-  Experience   Experience @relation(fields: [ExperienceId], references: [id])
+  Experience   Experience @relation(fields: [ExperienceId], references: [id], onDelete: Cascade)
 }
 
 model Pro {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   ExperienceId String     @db.ObjectId
   description  String
-  Experience   Experience @relation(fields: [ExperienceId], references: [id])
+  Experience   Experience @relation(fields: [ExperienceId], references: [id], onDelete: Cascade)
 }
 
 // model SavedUser {

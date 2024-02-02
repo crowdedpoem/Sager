@@ -5,9 +5,11 @@ import ProsAndCons from '@/components/ProsAndCons';
 import Timeline from '@/components/TimeLine';
 import { useState } from "react";
 // import { useSearchParams } from 'next/navigation'
-import { getExperiencesFromUserId } from "../../../../../lib/calls";
+import { getExperiencesFromUserId, removePost } from "../../../../../lib/calls";
 import useSWR from 'swr';
 import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { UserRole } from '@prisma/client';
 
 type Experience = {
     id: string,
@@ -27,9 +29,26 @@ export default function Post(
     { params }: any
 ) {
 
-    const { data, error } = useSWR(params.user_id, () => getExperiencesFromUserId(params.user_id));
+    const { data, error, mutate } = useSWR(params.user_id, () => getExperiencesFromUserId(params.user_id));
     const allExperiences = data;
 
+    const deleteTodoMutation = async (id:string) => {
+        console.log("hi")
+            console.log(id)
+        try {
+            const serverResp = await mutate(
+                removePost(id),
+            )
+            setExp(null)
+        } catch (err) {
+            console.log("error")
+        }
+    }
+
+    const session = useSession()
+    const isAdmin = session.data?.user.role === UserRole.ADMIN
+    const [isAuth, setIsAuth] = useState(false)
+    let checkedAuth = false;
     const [showModal, setShowModal] = useState(false);
 
     const [exp, setExp] = useState<Experience | null>(null);
@@ -41,6 +60,14 @@ export default function Post(
     useEffect(()=>{
         if(!!allExperiences && exp === null){
             setExp(allExperiences[0])
+                
+        }
+        //TODO thsi is stupid solution, maybe server component can pass down session?
+        if(!!exp && session.data?.user.id !== null && !checkedAuth ){
+            const viewerId = session.data?.user.id
+            setIsAuth(viewerId === allExperiences[0].userId)
+          
+           checkedAuth = true
         }
     })
 
@@ -57,9 +84,16 @@ export default function Post(
                             <div className="flex-grow flex h-full overflow-auto">
                                 <div className="w-1/2 overflow-auto border-r border-gray-700">
                                     <div className='flex flex-row-reverse m-5'>
-                                        <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => setShowModal(true)}>
+                                        { isAdmin ? <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => deleteTodoMutation(exp!.userId)}>
+                                        <p>admin remove</p>
+                                        </button>: <p>normie</p>
+                                        }
+                                        {
+                                            isAuth ? <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => setShowModal(true)}>
                                             <p>Add an Experience</p>
-                                        </button>
+                                        </button> : <h1>is visitor</h1>
+                                        }
+                                        {/*  */}
                                     </div>
 
                                     {showModal ? (
@@ -125,7 +159,8 @@ export default function Post(
                                         </>
                                     ) : null}
 
-                                    <Timeline items={allExperiences} expState={handleExp} />
+                                    {Array.isArray(allExperiences) && allExperiences.length === 0 ? <h1>user has not posted their career!</h1> : <Timeline items={allExperiences} expState={handleExp} />}
+                                   
 
                                 </div>
 
