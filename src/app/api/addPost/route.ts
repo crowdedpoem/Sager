@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+import prisma from "@/app/libs/prismadb";
 
 function removeWhitespace(data: any) {
   for (const key in data) {
