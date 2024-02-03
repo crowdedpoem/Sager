@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
+import { auth } from "@/auth";
 
 function removeWhitespace(data: any) {
   for (const key in data) {
@@ -13,8 +14,12 @@ function removeWhitespace(data: any) {
 }
 
 export async function POST(request: Request) {
+  const serverSession = await auth()
   const body = await request.json();
   const email = body["email"];
+  if (serverSession?.user.email !== email){
+    return new NextResponse("you can't edit other peoples stuff", {status: 403})
+  }
   const data = removeWhitespace(body["experience"]);
   console.log(data);
   for (const experience of data) {
