@@ -53,28 +53,42 @@ export default function Experience({ control, name, register, error, values }) {
 
       <h2>here are the pros</h2>
       {pros.fields.map((pro, index) => (
+        <div key={pro.id}>
         <SimpleInput
-          key={pro.id}
+          
           control={control}
           name={`experience[${name}].pros[${index}].description`}
           label="Pro of Job"
           register={register}
           error={error?.experience?.[name]?.pros?.[index]?.description}
         />
+        {index > 0 && (
+                    <button onClick={() => pros.remove(index)}>
+                      Remove this pro
+                    </button>
+                  )}
+        </div>
       ))}
       <button type="button" onClick={() => pros.append("")}>
         add pro
       </button>
       <h3>here are the cons</h3>
       {cons.fields.map((con, index) => (
+        <div key={con.id}>
         <SimpleInput
-          key={con.id}
+          
           control={control}
           name={`experience[${name}].cons[${index}].description`}
           label="Con of Job"
           register={register}
           error={error?.experience?.[name]?.cons?.[index]?.description}
         />
+  {index > 0 && (
+                    <button onClick={() => cons.remove(index)}>
+                      Remove this con
+                    </button>
+                  )}
+</div>
       ))}
       <button type="button" onClick={() => cons.append("")}>
         add con
