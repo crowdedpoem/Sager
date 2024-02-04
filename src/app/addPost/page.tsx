@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { FormProvider, UseFormReturn, useFieldArray, useForm, UseFieldArrayRemove, UseFieldArrayAppend } from "react-hook-form";
 import { z } from "zod";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -9,6 +9,7 @@ import { experienceSchema, singleExperience } from "@/validators/experience";
 import Experience from "./experience";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession, signOut } from "next-auth/react";
+import { useEffect } from "react";
 
 // localStorage.setItem("numExperience", "2")
 //   const numSavedExp = Number(localStorage.getItem("numExperience"))
@@ -19,52 +20,76 @@ import { useSession, signOut } from "next-auth/react";
 
 type input = z.infer<typeof experienceSchema>;
 type singleExp = z.infer<typeof singleExperience>;
+type appendType = {experience: singleExp}
 
-function listFromLocal(name: string) {
-  let arr = [];
-  let key = "";
-  let i = 0;
-  while (localStorage.getItem(key) != null || i === 0) {
-    key = name + `[${i}].description`;
-
-    arr[i] = { description: localStorage.getItem(key) ?? "" };
-    i += 1;
+function persistExperiences(append: UseFieldArrayAppend<input>) {
+  if (localStorage.getItem("numExperience") === null) {
+    localStorage.setItem("numExperience", "1")
   }
-  return arr;
+  const numExp = Number(localStorage.getItem("numExperience"))
+  for (let i = 1; i < numExp; i++) {
+    append({
+      title: "",
+      description: "",
+      startDate: dayjs(),
+      endDate: dayjs(),
+      pros: [{ description: "" }],
+      cons: [{ description: "" }],
+      dayEvents: [{ description: "" }],
+    })
+  };
 }
 
-function initForm(): input {
-  // console.log(listFromLocal("experience[0].pros"));
-  let arr = []
-  const numExp = Number(localStorage.getItem("numExperience"))
-  // console.log("num exp is " + numExp)
-  for(let i = 0; i < numExp; i++){
-    const jsonData: singleExp = {
-    
-      title: localStorage.getItem("experience.0.title") ?? "",
-      description: localStorage.getItem("experience.0.description") ?? "",
-      startDate:
-        dayjs(localStorage.getItem("experience[0].startDate")) ?? dayjs(),
-      endDate:
-        dayjs(localStorage.getItem("experience[0].endDate")) ?? dayjs(),
-      pros: listFromLocal("experience[0].pros"),
-      cons: listFromLocal("experience[0].cons"),
-      dayEvents: listFromLocal("experience[0].dayEvents"),
-  
-};
-arr.push(jsonData)
+function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function removeExpFromForm(remove: UseFieldArrayRemove, form: UseFormReturn<input>, index: number) {
+  remove(index)
+  //TODO remove all inputs for given exp, use function
+  removeExpFromLS(form, index)
+}
+
+function removeExpFromLS(form: UseFormReturn<input>, numExp: number) {
+  console.log("the index given to remove exp from ls is " + numExp)
+  localStorage.removeItem(`experience.${numExp}.title`)
+  localStorage.removeItem(`experience.${numExp}.description`)
+  localStorage.removeItem(`experience.${numExp}.startDate`)
+  localStorage.removeItem(`experience.${numExp}.endDate`)
+
+  const dict = ["pros", "cons", "dayEvents"]
+
+  for (const listName in dict) {
+    let j = 0
+    let numItems = Number(localStorage.getItem(`experience.${numExp}.num${capitalizeFirstLetter(listName)}`) ?? "1")
+    while (j < numItems) {
+      localStorage.removeItem(`experience.${numExp}.${listName}.${j}.description`)
+      j += 1
+    }
   }
 
-  return {
-    experience: arr
-  };
+  const prev = Number(localStorage.getItem("numExperience") ?? "2")
+  localStorage.setItem("numExperience", String(prev - 1))
 }
 
 export default function AddPost() {
 
+  const { data: session } = useSession();
 
   const form = useForm<input>({
-    defaultValues: initForm(),
+    defaultValues: {
+      experience: [
+        {
+          title: "",
+          description: "",
+          startDate: dayjs(),
+          endDate: dayjs(),
+          pros: [{ description: "" }],
+          cons: [{ description: "" }],
+          dayEvents: [{ description: "" }],
+        },
+      ],
+    },
     resolver: zodResolver(experienceSchema),
   });
 
@@ -74,6 +99,12 @@ export default function AddPost() {
     getValues,
     formState: { errors },
   } = form;
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      persistExperiences(append)
+    }
+  }, [form]);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -98,9 +129,17 @@ export default function AddPost() {
     } catch (error) {
       console.error(error);
     }
+    // get num of experiences and wipe them all from ls
+    if (localStorage.getItem("numExperience") === null) {
+      localStorage.setItem("numExperience", "1")
+    }
+    const numExp = Number(localStorage.getItem("numExperience"))
+    for (let i = 0; i < numExp; i++) {
+      removeExpFromLS(form, i)
+    }
   };
 
-  const { data: session } = useSession();
+
 
 
   return (
@@ -117,6 +156,7 @@ export default function AddPost() {
               return (
                 <div className="" key={id}>
                   <Experience
+                    form={form}
                     control={control}
                     name={index}
                     register={register}
@@ -124,8 +164,8 @@ export default function AddPost() {
                     values={values.experience[index]}
                   />
                   <br />
-                  {index === 1 && (
-                    <Button onClick={() => remove(index)}>
+                  {index > 0 && (
+                    <Button onClick={() => removeExpFromForm(remove, form, index)}>
                       Remove this Experience
                     </Button>
                   )}
@@ -134,11 +174,10 @@ export default function AddPost() {
                   <button
                     className=""
                     type="button"
-                    onClick={() =>{
+                    onClick={() => {
                       const currNum = Number(localStorage.getItem("numExperience"))
-                      localStorage.setItem("numExperience", 
-                      String(currNum+1)
-                      
+                      localStorage.setItem("numExperience",
+                        String(currNum + 1)
                       )
                       append({
                         title: "",
@@ -150,7 +189,6 @@ export default function AddPost() {
                         dayEvents: [{ description: "" }],
                       })
                     }
-                     
                     }
                   >
                     Add another event in the experience
