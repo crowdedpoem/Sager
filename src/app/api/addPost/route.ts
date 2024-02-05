@@ -60,7 +60,7 @@ export async function POST(request: Request) {
         // 1. find in prisma.tag for tag of same name
         //    if tag exists, connect user and tag
         //    else create tag like this
-      const tagsWithName = prisma.tag.find({
+      const tagsWithName = prisma.tag.findMany({
         where: {
           name: tag
         }
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
         await prisma.user.update({
           where: { email: email },
           data: {
-            tags: {
+            Tags: {
               connect: [{ name: tag }],
             },
           },
