@@ -1,5 +1,28 @@
 import axios from "axios";
 
+export function getIsSavedExperience(postId: string){
+  return axios.get("http://localhost:3000/api/isSave",
+    {
+      params: {
+        postId: postId
+      }
+    }).then((response) => response.data)
+}
+
+export function getSave(){
+  return axios.get("http://localhost:3000/api/getSave").then((response) => response.data)
+}
+
+export function changeSave(shouldSave: boolean, postId: string){
+  return axios.get("http://localhost:3000/api/changeSave",
+    {
+      params: {
+        postId: postId,
+        shouldSave: shouldSave
+      }
+    }).then((response) => response.data)
+}
+
 export function removePost(userId: string){
     return axios.delete("http://localhost:3000/api/removePost"
     , {
