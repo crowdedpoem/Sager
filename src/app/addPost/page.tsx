@@ -12,6 +12,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect } from "react";
 
+//TODO make chips for tags in form
+// https://mui.com/material-ui/react-chip/#deletable
+//TODO allow for current 'enddate' (still working)
+
 // localStorage.setItem("numExperience", "2")
 //   const numSavedExp = Number(localStorage.getItem("numExperience"))
 //   for(let i = 0; i < numSavedExp; i++){
@@ -117,6 +121,7 @@ export default function AddPost() {
     console.log("SUBMIT BUTTON");
     // console.log(data);
 
+    //TODO send all of "data"
     var sendToAPI: Record<string, any> = {};
     sendToAPI["experience"] = data["experience"];
     sendToAPI["email"] = session?.user?.email ?? "bad";
