@@ -1,62 +1,58 @@
 "use client"
 
-import { useCallback, useEffect, useState, useTransition } from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { useCallback, useEffect, useState, useTransition } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { useRef } from "react";
 
-
 const SearchServerParams = () => {
-    const [inputValue, setInputValue] = useState<string>("")
-    const [debouncedValue, setDebouncedValue] = useState<string>("")
-    const [mounted, setMounted] = useState<boolean>(false)
-    const router = useRouter()
-    const pathname = usePathname()
-    const [isPending, startTransition] = useTransition()
+    const [inputValue, setInputValue] = useState("");
+    const [debouncedValue, setDebouncedValue] = useState("");
+    const [mounted, setMounted] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const router = useRouter();
+    const pathname = usePathname();
+    const [isPending, startTransition] = useTransition();
 
     const handleSearchParams = useCallback(
-        (debouncedValue: string) => {
-            let params = new URLSearchParams(window.location.search)
-            if (debouncedValue.length > 0) {
-                params.set("search", debouncedValue)
+        (newDebouncedValue: string) => {
+            let params = new URLSearchParams(window.location.search);
+            if (newDebouncedValue.length > 0) {
+                params.set("search", newDebouncedValue);
             } else {
-                params.delete("search")
+                params.delete("search");
             }
             startTransition(() => {
-                router.replace(`${pathname}?${params.toString()}`)
-            })
+                router.replace(`${pathname}?${params.toString()}`);
+            });
         },
         [pathname, router]
-    )
+    );
 
-    // EFFECT: Set Initial Params
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search)
-        const searchQuery = params.get("search") ?? ""
-        setInputValue(searchQuery)
-    }, [])
+        const params = new URLSearchParams(window.location.search);
+        const searchQuery = params.get("search") ?? "";
+        setInputValue(searchQuery.toLowerCase());
+    }, []);
 
-    // EFFECT: Set Mounted
     useEffect(() => {
         if (debouncedValue.length > 0 && !mounted) {
-            setMounted(true)
+            setMounted(true);
         }
-    }, [debouncedValue, mounted])
+    }, [debouncedValue, mounted]);
 
-    // EFFECT: Debounce Input Value
     useEffect(() => {
         const timer = setTimeout(() => {
-            setDebouncedValue(inputValue)
-        }, 500)
+            setDebouncedValue(inputValue);
+        }, 500);
 
         return () => {
-            clearTimeout(timer)
-        }
-    }, [inputValue])
+            clearTimeout(timer);
+        };
+    }, [inputValue]);
 
-    // EFFECT: Search Params
     useEffect(() => {
-        if (mounted) handleSearchParams(debouncedValue)
-    }, [debouncedValue, handleSearchParams, mounted])
+        if (mounted) handleSearchParams(debouncedValue);
+    }, [debouncedValue, handleSearchParams, mounted]);
 
     const clickPoint = useRef<HTMLDivElement>(null);
 
@@ -73,25 +69,91 @@ const SearchServerParams = () => {
     };
 
     return (
-        <div className="flex-1" >
-            <div className="relative mr-3">
+        <div>
+            <div className="relative mb-8 grow">
+                {/* Search input and its icon */}
                 <div className="absolute top-3 left-3 items-center" ref={clickPoint}>
-                    <svg className="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
+                    {/* ... SVG and input JSX */}
                 </div>
                 <input
-                type="text"
-                className="block p-2 pl-10 w-full object-fill text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:pl-3"
-                placeholder="Search"
-                onChange={(e) => {
-                    setInputValue(e.target.value)
-                }}
-                value={inputValue}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-            />
+                    type="text"
+                    className="block p-2 pl-10 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:pl-3"
+                    placeholder="Search"
+                    onChange={(e) => {
+                        setInputValue(e.target.value);
+                    }}
+                    value={inputValue}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                />
+            </div>
+
+            <div className="flex justify-between items-center">
+                <div className="flex flex-col pl-4 space-y-1"> {/* Adjusted for vertical stacking */}
+                    {debouncedValue && (
+                        <span className="text-sm font-medium text-gray-700">
+                            Showing results for "{debouncedValue}" <br />
+                        </span>
+                    )}
+                    {/* <span className="text-sm font-medium text-gray-700">7 results</span> */}
+                </div>
+                <div className="relative pr-4">
+                    <button
+                        type="button"
+                        className="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+                        id="menu-button"
+                        aria-expanded="true"
+                        aria-haspopup="true"
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    >
+                        Sort
+                    </button>
+
+                    {/* Dropdown content */}
+                    {isDropdownOpen && (
+                        <div
+                            className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                            role="menu"
+                            aria-orientation="vertical"
+                            aria-labelledby="menu-button"
+                            tabIndex={-1}
+                        >
+                            <div className="py-1" role="none">
+                                {/* Dropdown items */}
+                                <a
+                                    href="#"
+                                    className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                    role="menuitem"
+                                    tabIndex={-1}
+                                    id="menu-item-0"
+                                >
+                                    Recently Updated
+                                </a>
+                                <a
+                                    href="#"
+                                    className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                    role="menuitem"
+                                    tabIndex={-1}
+                                    id="menu-item-1"
+                                >
+                                    Most Upvoted
+                                </a>
+                                <a
+                                    href="#"
+                                    className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                    role="menuitem"
+                                    tabIndex={-1}
+                                    id="menu-item-1"
+                                >
+                                    Alphabetical
+                                </a>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default SearchServerParams
+export default SearchServerParams;
