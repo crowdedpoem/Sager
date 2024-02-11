@@ -135,7 +135,7 @@ model Save {
   userId String @db.ObjectId
   postId String @db.ObjectId
   poster        User         @relation("poster", fields: [postId], references: [id], onDelete: Cascade)
-  user   User   @relation("liker", fields: [userId], references: [id]) 
+  user   User   @relation("liker", fields: [userId], references: [id], onDelete: Cascade) 
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }
