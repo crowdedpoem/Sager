@@ -56,3 +56,13 @@ export function getExperiencesFromTitle(title: string){
       }
     }).then(response => response.data);
 }
+
+export function getUsersWithPath(career1: string, career2: string){
+  return  axios.get(`http://localhost:3000/api/getUsersWithPath`,
+  {
+    params: {
+      career1: career1,
+      career2: career2
+    }
+  }).then(response => response.data);
+}
