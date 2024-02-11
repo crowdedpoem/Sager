@@ -49,3 +49,10 @@ export  function getExperiencesFromUserId (userId: string) {
 
 }
 
+export function getExperiencesFromTitle(title: string){
+    return axios.get(`http://localhost:3000/api/getExperiencesForTitle`, {
+      params:{
+        title: title
+      }
+    }).then(response => response.data);
+}
