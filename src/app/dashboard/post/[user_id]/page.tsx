@@ -3,13 +3,14 @@
 import Features from '@/components/Features';
 import ProsAndCons from '@/components/ProsAndCons';
 import Timeline from '@/components/TimeLine';
-import { useState } from "react";
+import { EventHandler, useState } from "react";
 // import { useSearchParams } from 'next/navigation'
-import { getExperiencesFromUserId, removePost } from "../../../../../lib/calls";
+import { changeSave, getExperiencesFromUserId, getIsSavedExperience, removePost } from "../../../../../lib/calls";
 import useSWR from 'swr';
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { UserRole } from '@prisma/client';
+import Switch from '@mui/material/Switch';
 
 type Experience = {
     id: string,
@@ -29,10 +30,16 @@ export default function Post(
     { params }: any
 ) {
 
-    const { data, error, mutate } = useSWR(params.user_id, () => getExperiencesFromUserId(params.user_id));
-    const allExperiences = data;
+    // need to get whether user saved this post
 
-    const deleteTodoMutation = async (id:string) => {
+
+
+    const exps = useSWR(params.user_id + "getExperiences", () => getExperiencesFromUserId(params.user_id));
+    const allExperiences = exps.data
+
+    const isSaved = useSWR(params.user_id + "isPostSaved", () => getIsSavedExperience(params.user_id))
+
+    const deleteTodoMutation = async (id: string) => {
         console.log("hi")
             console.log(id)
         try {
@@ -52,13 +59,26 @@ export default function Post(
     const [showModal, setShowModal] = useState(false);
 
     const [exp, setExp] = useState<Experience | null>(null);
+    const [checked, setChecked] = useState(false)
+
+    function saveToggle(userId: string, value: boolean) {
+        setChecked(value)
+        changeSave(value, userId)
+    }
 
     const handleExp = (e: any) => {
         setExp(e);
     };
 
-    useEffect(()=>{
-        if(!!allExperiences && exp === null){
+    //TODO break up into multiple useEffects 
+    useEffect(() => {
+        if(isSaved.data){
+            setChecked(isSaved.data)
+        }
+    }, [isSaved.data])
+
+    useEffect(() => {
+        if (!!allExperiences && exp === null) {
             setExp(allExperiences[0])
                 
         }
@@ -90,8 +110,16 @@ export default function Post(
                                         }
                                         {
                                             isAuth ? <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => setShowModal(true)}>
-                                            <p>Add an Experience</p>
-                                        </button> : <h1>is visitor</h1>
+                                                <p>Add an Experience</p>
+                                            </button> :
+
+                                                // <button onClick={()=> saveUser(exp ? exp.userId : "")}>Save</button>
+                                                <div>
+                                                    <p>Save</p>
+                                                    <Switch checked={checked} onChange={(e) => saveToggle(exp ? exp.userId : "", e.target.checked)} inputProps={{ 'aria-label': 'controlled' }} />
+                                                </div>
+
+
                                         }
                                         {/*  */}
                                     </div>

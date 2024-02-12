@@ -81,6 +81,17 @@ model User {
   accounts Account[]
   
   Experiences Experience[] @relation("Author")
+  mySaves Save[] @relation("liker")
+  myLikes Save[] @relation("poster")
+  tagIds String[]   @db.ObjectId
+  Tags  Tag[] @relation(fields: [tagIds], references: [id])
+}
+
+model Tag {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+  userIds String[] @db.ObjectId
+  Users   User[]   @relation(fields: [userIds], references: [id])
 }
 
 model Experience {
@@ -119,10 +130,12 @@ model Pro {
   Experience   Experience @relation(fields: [ExperienceId], references: [id], onDelete: Cascade)
 }
 
-// model SavedUser {
-//   id     String @id @default(auto()) @map("_id") @db.ObjectId
-//   userId String @db.ObjectId
-//   experienceId String @db.ObjectId
-//   experience   Experience   @relation(fields: [experienceId], references: [id])
-//   user   User   @relation(fields: [userId], references: [id]) 
-// }
+model Save {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  postId String @db.ObjectId
+  poster        User         @relation("poster", fields: [postId], references: [id], onDelete: Cascade)
+  user   User   @relation("liker", fields: [userId], references: [id], onDelete: Cascade) 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}

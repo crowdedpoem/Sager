@@ -2,14 +2,19 @@
 import { Button } from "@/components/ui/button";
 import { FormProvider, UseFormReturn, useFieldArray, useForm, UseFieldArrayRemove, UseFieldArrayAppend } from "react-hook-form";
 import { z } from "zod";
+import SimpleInput from "./simple_input";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { experienceSchema, singleExperience } from "@/validators/experience";
+import { formSchema, singleExperience } from "@/validators/experience";
 import Experience from "./experience";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect } from "react";
+
+//TODO make chips for tags in form
+// https://mui.com/material-ui/react-chip/#deletable
+//TODO allow for current 'enddate' (still working)
 
 // localStorage.setItem("numExperience", "2")
 //   const numSavedExp = Number(localStorage.getItem("numExperience"))
@@ -18,7 +23,7 @@ import { useEffect } from "react";
 //     console.log(exp)
 //   }
 
-type input = z.infer<typeof experienceSchema>;
+type input = z.infer<typeof formSchema>;
 type singleExp = z.infer<typeof singleExperience>;
 type appendType = {experience: singleExp}
 
@@ -78,6 +83,7 @@ export default function AddPost() {
 
   const form = useForm<input>({
     defaultValues: {
+      tag: "",
       experience: [
         {
           title: "",
@@ -86,11 +92,11 @@ export default function AddPost() {
           endDate: dayjs(),
           pros: [{ description: "" }],
           cons: [{ description: "" }],
-          dayEvents: [{ description: "" }],
+          dayEvents: [{ description: "" }]
         },
       ],
     },
-    resolver: zodResolver(experienceSchema),
+    resolver: zodResolver(formSchema),
   });
 
   const {
@@ -115,9 +121,11 @@ export default function AddPost() {
     console.log("SUBMIT BUTTON");
     // console.log(data);
 
+    //TODO send all of "data"
     var sendToAPI: Record<string, any> = {};
     sendToAPI["experience"] = data["experience"];
     sendToAPI["email"] = session?.user?.email ?? "bad";
+    sendToAPI["tag"] = data["tag"]
     console.log(sendToAPI);
 
     try {
@@ -151,6 +159,13 @@ export default function AddPost() {
             onSubmit={form.handleSubmit(onFormSubmit)}
             className="space-y-3"
           >
+            <SimpleInput
+              control={control}
+              name={`tag`}
+              register={register}
+              label="tag"
+              error={errors?.tag}
+            />
             {fields.map(({ id }, index) => {
               const values = getValues();
               return (

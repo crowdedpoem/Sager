@@ -22,6 +22,7 @@ export async function POST(request: Request) {
   }
   const data = removeWhitespace(body["experience"]);
   console.log(data);
+  const tag = body["tag"]
   for (const experience of data) {
     console.log("in post say hi");
     console.log(experience.title);
@@ -54,6 +55,44 @@ export async function POST(request: Request) {
       },
     });
   }
+
+  // this keeps on creating new tags, instead we should link to a current tag if possible
+        // 1. find in prisma.tag for tag of same name
+        //    if tag exists, connect user and tag
+        //    else create tag like this
+      const tagsWithName = prisma.tag.findMany({
+        where: {
+          name: tag
+        }
+      })
+      const tagExists = !!tagsWithName 
+      if(tagExists){
+        // connect
+        await prisma.user.update({
+          where: { email: email },
+          data: {
+            Tags: {
+              connect: [{ name: tag }],
+            },
+          },
+        });
+        
+      }
+      else{
+        prisma.user.update({
+          where: {
+            email: email,
+          },
+          data: {
+            Tags: {create: [
+              {
+                name: tag
+              }
+            ]}
+          },
+        });
+      }
+        
 
   // replace null with result
   return NextResponse.json(null, { status: 200 });

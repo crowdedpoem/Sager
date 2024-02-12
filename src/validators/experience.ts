@@ -12,9 +12,10 @@ export const singleExperience = z.object({
   endDate: z.any(),
   pros: z.array(listSchema),
   cons: z.array(listSchema),
-  dayEvents: z.array(listSchema),
+  dayEvents: z.array(listSchema)
 });
 
-export const experienceSchema = z.object({
+export const formSchema = z.object({
+  tag: z.string(),
   experience: z.array(singleExperience),
 });
