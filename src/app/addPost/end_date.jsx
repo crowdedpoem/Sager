@@ -12,9 +12,9 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export default function EndDate({ data, control, name, label, start }) {
   return (
     <>
-      <div className="flex justify-items-stretch">
+      <div className="flex justify-items-stretch ml-5">
         <FormItem>
-          <FormDescription className="m-0 p-0">{label}</FormDescription>
+          <label className="block mb-2 text-md font-medium text-gray-900">{label}</label>
           <FormControl>
             <Controller
               name={name}
@@ -22,7 +22,7 @@ export default function EndDate({ data, control, name, label, start }) {
               defaultValue={data || dayjs()}
               render={({ field }) => (
                 <DatePicker
-                  className=""
+                  className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                   value={field.value}
                   onChange={(e) => {
                     field.onChange(e);

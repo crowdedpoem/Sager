@@ -24,8 +24,8 @@ export async function POST(request: Request) {
   console.log(data);
   const tag = body["tag"]
   for (const experience of data) {
-    console.log("in post say hi");
-    console.log(experience.title);
+    // console.log("in post say hi");
+    // console.log(experience.title);
 
     const result = await prisma.user.update({
       where: {
