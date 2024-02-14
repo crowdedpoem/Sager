@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+import prisma from "@/app/libs/prismadb";
+import { auth } from "@/auth";
 
 function removeWhitespace(data: any) {
   for (const key in data) {
@@ -14,10 +14,15 @@ function removeWhitespace(data: any) {
 }
 
 export async function POST(request: Request) {
+  const serverSession = await auth()
   const body = await request.json();
   const email = body["email"];
+  if (serverSession?.user.email !== email){
+    return new NextResponse("you can't edit other peoples stuff", {status: 403})
+  }
   const data = removeWhitespace(body["experience"]);
-  // console.log(data);
+  console.log(data);
+  const tag = body["tag"]
   for (const experience of data) {
     // console.log("in post say hi");
     // console.log(experience.title);
@@ -50,6 +55,44 @@ export async function POST(request: Request) {
       },
     });
   }
+
+  // this keeps on creating new tags, instead we should link to a current tag if possible
+        // 1. find in prisma.tag for tag of same name
+        //    if tag exists, connect user and tag
+        //    else create tag like this
+      const tagsWithName = prisma.tag.findMany({
+        where: {
+          name: tag
+        }
+      })
+      const tagExists = !!tagsWithName 
+      if(tagExists){
+        // connect
+        await prisma.user.update({
+          where: { email: email },
+          data: {
+            Tags: {
+              connect: [{ name: tag }],
+            },
+          },
+        });
+        
+      }
+      else{
+        prisma.user.update({
+          where: {
+            email: email,
+          },
+          data: {
+            Tags: {create: [
+              {
+                name: tag
+              }
+            ]}
+          },
+        });
+      }
+        
 
   // replace null with result
   return NextResponse.json(null, { status: 200 });

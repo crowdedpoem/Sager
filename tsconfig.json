@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(site)/addPost/timeLine.tsx", "src/app/(site)/timeline/page.jsx", "src/app/(site)/dynamic/page.jsx", "src/app/(site)/addPost/page.jsx", "src/app/(site)/addPost/simple_component.jsx", "src/app/(site)/addPost/simple_date.jsx", "src/app/(site)/addPost/simple_time.jsx", "src/app/api/addPost/route.js"],
+  "include": ["next-env.d.ts", "models/**/*.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(site)/addPost/timeLine.tsx", "src/app/(site)/timeline/page.jsx", "src/app/(site)/dynamic/page.jsx", "src/app/(site)/addPost/page.jsx", "src/app/(site)/addPost/simple_component.jsx", "src/app/(site)/addPost/simple_date.jsx", "src/app/(site)/addPost/simple_time.jsx", "src/app/api/addPost/route.js", "src/app/api/auth/[...nextauth]/route.jsx"],
   "exclude": ["node_modules"]
 }
