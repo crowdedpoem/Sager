@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { UserRole } from '@prisma/client';
 import Switch from '@mui/material/Switch';
+import DayInTheLife from '@/components/DayInTheLife';
 
 type Experience = {
     id: string,
