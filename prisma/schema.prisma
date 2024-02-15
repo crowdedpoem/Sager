@@ -62,6 +62,11 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
 model User {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name       String?
@@ -71,10 +76,22 @@ model User {
   hashedPassword String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+  role UserRole @default(USER)
 
   accounts Account[]
   
   Experiences Experience[] @relation("Author")
+  mySaves Save[] @relation("liker")
+  myLikes Save[] @relation("poster")
+  tagIds String[]   @db.ObjectId
+  Tags  Tag[] @relation(fields: [tagIds], references: [id])
+}
+
+model Tag {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+  userIds String[] @db.ObjectId
+  Users   User[]   @relation(fields: [userIds], references: [id])
 }
 
 model Experience {
@@ -89,34 +106,36 @@ model Experience {
   dayEvents   DayEvent[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  user        User         @relation("Author", fields: [userId], references: [id])
+  user        User         @relation("Author", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model DayEvent {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   ExperienceId String     @db.ObjectId
   description  String
-  Experience   Experience @relation(fields: [ExperienceId], references: [id])
+  Experience   Experience @relation(fields: [ExperienceId], references: [id], onDelete: Cascade)
 }
 
 model Con {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   ExperienceId String     @db.ObjectId
   description  String
-  Experience   Experience @relation(fields: [ExperienceId], references: [id])
+  Experience   Experience @relation(fields: [ExperienceId], references: [id], onDelete: Cascade)
 }
 
 model Pro {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   ExperienceId String     @db.ObjectId
   description  String
-  Experience   Experience @relation(fields: [ExperienceId], references: [id])
+  Experience   Experience @relation(fields: [ExperienceId], references: [id], onDelete: Cascade)
 }
 
-// model SavedUser {
-//   id     String @id @default(auto()) @map("_id") @db.ObjectId
-//   userId String @db.ObjectId
-//   experienceId String @db.ObjectId
-//   experience   Experience   @relation(fields: [experienceId], references: [id])
-//   user   User   @relation(fields: [userId], references: [id]) 
-// }
+model Save {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  postId String @db.ObjectId
+  poster        User         @relation("poster", fields: [postId], references: [id], onDelete: Cascade)
+  user   User   @relation("liker", fields: [userId], references: [id], onDelete: Cascade) 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}

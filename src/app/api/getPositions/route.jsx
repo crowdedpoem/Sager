@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 
-const prisma = new PrismaClient();
 
 export async function GET(request, response) {
   let userId = request.nextUrl.searchParams.get("userId");
