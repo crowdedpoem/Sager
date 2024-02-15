@@ -23,8 +23,8 @@ export default async function Page() {
 
     return (
         <>
-            <div className="container my-12 mx-auto px-4 md:px-12">
-                <div className=" flex flex-wrap mb-4">
+            <div className="container my-12 mx-auto px-4">
+                <div className="">
                     <SearchServerParams />
                 </div>
                 <Suspense fallback={<Loading />}>

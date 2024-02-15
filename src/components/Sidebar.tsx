@@ -5,11 +5,8 @@ import {
     BsSearch,
     BsEyeFill,
     BsBookmarkFill,
-    BsPeopleFill,
-    BsTerminalFill,
 } from 'react-icons/bs'
 import { AiFillFire, AiFillMessage, } from 'react-icons/ai'
-import { IoMdArrowRoundUp } from 'react-icons/io'
 import { MdNightlightRound, MdFeedback } from 'react-icons/md'
 import AddPost from '../../src/app/addPost/page'
 import { FaCog } from 'react-icons/fa'
@@ -24,8 +21,6 @@ const App = () => {
     const handleModalState = (e: boolean) => {
         setShowModal(e);
     };
-
-
 
     return (
         <div className="flex ">
@@ -91,7 +86,7 @@ const App = () => {
                     ))}
 
 
-                    {datafooter.map((group, index) => (
+                    {/* {datafooter.map((group, index) => (
                         <div key={index} className='my-2' >
                             <p className={`${!open && "hidden"} mb-2 ml-4 text-md text-gray-700`} >{group.name}</p>
 
@@ -104,7 +99,7 @@ const App = () => {
                                 </div>
                             ))}
                         </div>
-                    ))}
+                    ))} */}
 
                     <div className={`px-4 flex justify-center flex-col mb-4 w-full mt-36`} >
                         {session === null ?
@@ -141,14 +136,6 @@ const sideBarTopData = [
                 title: 'Popular',
                 icon: AiFillFire,
             },
-            // {
-            //     title: 'Most Upvoted',
-            //     icon: IoMdArrowRoundUp,
-            // },
-            // {
-            //     title: 'Best Discussions',
-            //     icon: AiFillMessage,
-            // },
             {
                 title: 'Search',
                 icon: BsSearch,
@@ -166,47 +153,39 @@ const sideBarTopData = [
     {
         name: 'Manage',
         items: [
-            // {
-            //     title: 'Bookmarks',
-            //     icon: BsBookmarkFill,
-            // },
-            // {
-            //     title: 'Reading history',
-            //     icon: BsEyeFill,
-            // },
-            // {
-            //     title: 'Focus Mode',
-            //     icon: MdNightlightRound,
-            // },
-            // {
-            //     title: 'Customize',
-            //     icon: FaCog,
-            // },
-        ]
-    },
-]
-
-const datafooter = [
-
-    {
-        name: '',
-        items: [
             {
                 title: 'Docs',
                 icon: BsBookmarkFill,
             },
-            // {
-            //     title: 'Changelog',
-            //     icon: BsTerminalFill,
-            // },
             {
                 title: 'Feedback',
                 icon: MdFeedback,
             },
-            // {
-            //     title: 'Invite people',
-            //     icon: BsPeopleFill,
-            // },
         ]
     },
 ]
+
+// const datafooter = [
+
+//     {
+//         name: '',
+//         items: [
+//             // {
+//             //     title: 'Docs',
+//             //     icon: BsBookmarkFill,
+//             // },
+//             // // {
+//             // //     title: 'Changelog',
+//             // //     icon: BsTerminalFill,
+//             // // },
+//             // {
+//             //     title: 'Feedback',
+//             //     icon: MdFeedback,
+//             // },
+//             // // {
+//             // //     title: 'Invite people',
+//             // //     icon: BsPeopleFill,
+//             // // },
+//         ]
+//     },
+// ]

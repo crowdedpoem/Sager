@@ -17,6 +17,10 @@ const config: Config = {
         transparent: 'transparent',
         'purple': "#5a2675"
       },
+      fontFamily: {
+        'nunito': ['nunito', 'sans-serif'],
+        'MyFont': ['"My Font"', 'serif'] // Ensure fonts with spaces have " " surrounding it.
+      },
     },
   },
   plugins: [],
