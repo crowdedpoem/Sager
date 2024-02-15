@@ -1,14 +1,20 @@
+
 import { ReactNode } from "react";
 import Sidebar from "@/components/Sidebar";
 import NavBar from '@/components/NavBar'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import QProvider from "./queryProvider"
 
 type Props = {
     children: ReactNode
 }
 
+const queryClient = new QueryClient()
+
 const Layout = (props: Props) => {
     return (
         <>
+        <QProvider>
             <div className="min-h-screen h-screen flex flex-col">
 
                 <header className="h-20">
@@ -28,6 +34,7 @@ const Layout = (props: Props) => {
 
                 {/* <footer className="border-t border-red-300 p-2">Footer</footer> */}
             </div>
+            </QProvider>
         </>
 
     )
