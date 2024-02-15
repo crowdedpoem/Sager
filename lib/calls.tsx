@@ -34,6 +34,18 @@ export function removePost(userId: string){
 
 }
 
+export async function getHomeExperiences(take: number, page: number) {
+   const value = await axios.get(`http://localhost:3000/api/getHomeExperiences`, {
+    params: {
+      isDistinct: true,
+      page: page,
+      take: take
+    },
+
+  })
+  return value.data
+}
+
 export async function getAllExperiences() {
     const allDistinctExperiences = await axios.get(`http://localhost:3000/api/getPosts`, {
         params : {
