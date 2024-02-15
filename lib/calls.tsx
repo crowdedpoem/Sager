@@ -1,4 +1,5 @@
 import axios from "axios";
+import { normalize } from "@/app/libs/normalize";
 
 export async function getAllExperiences() {
     const allDistinctExperiences = await axios.get(`http://localhost:3000/api/getPosts`, {
@@ -18,20 +19,20 @@ export async function getFilteredExperinces(query: string) {
     });
 
     const highlightQuery = (text: string, query: string) => {
-        const highlightedText = text.replace(new RegExp(query, 'gi'), (match) => `<mark>${match}</mark>`);
+        const highlightedText = text.replace(new RegExp(normalize(query), 'gi'), (match) => `<mark>${match}</mark>`);
         return highlightedText;
     };
 
     // filter per query
     // const filterdExperiences = allExperiences.data.filter((exp: any) => (exp.description?.toLowerCase().includes(query) | exp.title?.toLowerCase().includes(query)));
     const filteredExperiences = allExperiences.data.filter((exp: any) => {
-        const queryLower = query.toLowerCase();
-        return exp.description?.toLowerCase().includes(queryLower) || exp.title?.toLowerCase().includes(queryLower);
+        const normalizedQuery = normalize(query);
+        return exp.description?.toLowerCase().includes(normalizedQuery) || exp.title?.toLowerCase().includes(normalize(normalizedQuery));
     }).map((exp: any) => {
-        if (exp.description?.toLowerCase().includes(query.toLowerCase())) {
+        if (normalize(exp.description).includes(normalize(query))) {
             exp.description = highlightQuery(exp.description, query);
         }
-        if (exp.title?.toLowerCase().includes(query.toLowerCase())) {
+        if (normalize(exp.title).includes(normalize(query))) {
             exp.title = highlightQuery(exp.title, query);
         }
         return exp;

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { normalize } from "@/app/libs/normalize";
 import { useRef } from "react";
 
 const SearchServerParams = () => {
@@ -31,7 +32,7 @@ const SearchServerParams = () => {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const searchQuery = params.get("search") ?? "";
-        setInputValue(searchQuery.toLowerCase());
+        setInputValue(normalize(searchQuery));
     }, []);
 
     useEffect(() => {
