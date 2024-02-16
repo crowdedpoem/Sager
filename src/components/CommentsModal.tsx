@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+import { addComment } from '../../lib/calls';
+import { usePostId } from '@/app/dashboard/post/[user_id]/page';
 
 interface CommentsModalProps {
+    expId: string;
     isOpen: boolean;
     handleClose: () => void;
 }
 
-const CommentsModal = ({ isOpen, handleClose }: CommentsModalProps) => {
+const CommentsModal = ({ expId, isOpen, handleClose }: CommentsModalProps) => {
+    const postId = usePostId() ?? ""
 
     const [newComment, setNewComment] = useState('');
     const handleAddComment = () => {
-        console.log("tst")
+        addComment(postId, expId, newComment)
     };
 
     if (!isOpen) return null;

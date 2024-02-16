@@ -10,9 +10,21 @@ export async function GET(request, response) {
         userId: userId,
     },
     include: {
-      pros: true,
-      cons: true,
-      dayEvents: true
+      pros: {select: { description: true}},
+      cons: {select: { description: true}},
+      dayEvents: {select: { description: true}},
+      comments: {
+        select: {
+          content: true,
+          createdAt: true,
+          Author: {
+            select: {
+              image:true,
+              name: true
+            }
+          }
+        }
+      }
     },
   });
 

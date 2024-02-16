@@ -3,7 +3,7 @@
 import Features from '@/components/Features';
 import ProsAndCons from '@/components/ProsAndCons';
 import Timeline from '@/components/TimeLine';
-import { EventHandler, useState } from "react";
+import { EventHandler, createContext, useContext, useState } from "react";
 // import { useSearchParams } from 'next/navigation'
 import { changeSave, getExperiencesFromUserId, getIsSavedExperience, removePost } from "../../../../../lib/calls";
 import useSWR from 'swr';
@@ -13,38 +13,51 @@ import { UserRole } from '@prisma/client';
 import Switch from '@mui/material/Switch';
 import DayInTheLife from '@/components/DayInTheLife';
 import AddExperienceModal from '@/components/AddExperienceModal';
-import { getExperiencesFromUserId } from "../../../../../lib/calls";
-import { experienceSchema } from "@/validators/experience";
-import { z } from "zod";
+import CommentSection from '@/components/CommentSection';
 
-type Experience = {
-    id: string,
-    userId: string,
-    startDate: string,
-    title: string,
-    description: string,
-    endDate: string,
-    createdAt: string,
-    updatedAt: string,
-    pros: string[],
-    cons: string[]
-}
+// Create a context to hold the postId value
+const PostIdContext = createContext<string | undefined>(undefined);
+
+// Custom hook to access postId value
+export const usePostId = () => useContext(PostIdContext);
+
+// Wrapper component that sets the postId value and provides it to its children
+const PostIdProvider: React.FC<{ id: string, children: React.ReactNode }> = ({ id, children }) => {
+  return (
+    <PostIdContext.Provider value={id}>
+      {children}
+    </PostIdContext.Provider>
+  );
+};
 
 
 export default function Post(
     { params }: any
 ) {
 
-type Experience = z.infer<typeof experienceSchema>
+    type Experience = {
+        id: string,
+        userId: string,
+        startDate: string,
+        title: string,
+        description: string,
+        endDate: string,
+        createdAt: string,
+        updatedAt: string,
+        pros: string[],
+        cons: string[],
+        dayEvents: string[],
+        comments: any[]
+    }
 
-    // need to get whether user saved this post
 
+    const {data: exps, mutate} = useSWR(params.user_id + "getExperiences", () => getExperiencesFromUserId(params.user_id));
+    const allExperiences = exps
+    const [postId, setPostId] = useState(params.user_id);
+    const value = { postId, setPostId };
+    
 
-
-
-    const exps = useSWR(params.user_id + "getExperiences", () => getExperiencesFromUserId(params.user_id));
-    const allExperiences = exps.data
-
+    //TODO add 'saved' to the original database call
     const isSaved = useSWR(params.user_id + "isPostSaved", () => getIsSavedExperience(params.user_id))
 
     const deleteTodoMutation = async (id: string) => {
@@ -102,7 +115,7 @@ type Experience = z.infer<typeof experienceSchema>
     return (
         <>
             <section className="">
-
+            <PostIdProvider id={params.user_id}>
                 <div className="h-screen">
                     <div className="h-full flex gap-x-4">
                         <div className="w-full flex flex-col">
@@ -158,8 +171,8 @@ type Experience = z.infer<typeof experienceSchema>
                                                 <ProsAndCons pros={exp.pros} cons={exp.cons} />
 
                                                 <h1 className='font-big-shoulders-display text-2xl pb-3 flex text-gray-700 flex items-center justify-center pt-24'>TODO Big picture section</h1>
-                                                <DayInTheLife items={exp.dayEvents} />
-
+                                                <DayInTheLife items={exp.dayEvents} />     
+                                                <CommentSection comments={exp.comments} />
                                             </div>
                                         ) : (
                                             <h1 className="text-black">click on one bruh</h1>
@@ -172,7 +185,7 @@ type Experience = z.infer<typeof experienceSchema>
                         </div>
                     </div>
                 </div>
-
+          </PostIdProvider>
             </section>
         </>
     )

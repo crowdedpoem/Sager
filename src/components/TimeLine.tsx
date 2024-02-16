@@ -1,4 +1,5 @@
 "use client"
+import { useSession } from "next-auth/react";
 import AnimatedIconButton from "../components/Checkmark"
 import CommentButton from "./CommentIcon";
 
@@ -6,7 +7,9 @@ import CommentButton from "./CommentIcon";
 export default function TimeLine(props: { items: any, expState: any }) {
     let experiences = props.items;
     let expState = props.expState;
-    
+    let session = useSession();
+    let isSignedIn = !!session.data?.user
+
     function formatDate(date: any) {
         const start = new Date(date)
         return start.toLocaleDateString("en-US") // 2/14/2024
@@ -37,8 +40,7 @@ export default function TimeLine(props: { items: any, expState: any }) {
                             </div>
 
                             <div className="flex items-center mr-5 gap-3">
-                                <AnimatedIconButton />
-                                <CommentButton/>
+                                {isSignedIn ? <><AnimatedIconButton /><CommentButton expId={exp.id}/></> : <></>}
                             </div>
                         </div>
 
