@@ -23,7 +23,7 @@ export default function DayEvent({
                     Day In the life for the Position:
                 </label>
                 {dayEvents.fields.map((dayEvent, index) => (
-                    <div className="">
+                    <div className="" key={index}>
                         <div key={dayEvent.id} className="flex flex-col">
                             <SimpleInput
                                 control={control}

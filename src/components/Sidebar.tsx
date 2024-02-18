@@ -8,7 +8,7 @@ import {
 } from 'react-icons/bs'
 import { AiFillFire, AiFillMessage, } from 'react-icons/ai'
 import { MdNightlightRound, MdFeedback } from 'react-icons/md'
-import AddPost from '../../src/app/addPost/page'
+import AddPost from '../app/addPost/page'
 import { FaCog } from 'react-icons/fa'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
@@ -55,7 +55,7 @@ const App = () => {
                                         {/*header*/}
                                         <div className="flex items-start sticky top-0 overflow-hidden bg-white justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                                             <h3 className="text-3xl font-semibold">
-                                                Add Your Experinces
+                                                Add Your Experiences
                                             </h3>
                                         </div>
                                         {/*body*/}

@@ -1,7 +1,8 @@
 import { z } from "zod";
 
 const listSchema = z.object({
-  description: z.string().min(2, { message: "enter a longer title" }).max(100),
+  title: z.string().min(2, { message: "enter a longer title" }).max(100),
+  description: z.string().min(2, { message: "enter a longer description" }).max(100),
 });
 
 export const singleExperience = z.object({
