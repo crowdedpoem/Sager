@@ -70,7 +70,7 @@ const SankeyDiagram = ({ data }) => {
             .data(sankeyLinks)
             .join("path")
             .attr("d", sankeyLinkHorizontal())
-            .attr("stroke-width", d => Math.max(1, d.width))
+            .attr("strokeWidth", d => Math.max(1, d.width))
             .attr("stroke", (d, i) => {
                 // Get the colors of the source and target nodes
                 const sourceColor = color(d.source.index);

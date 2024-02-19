@@ -11,12 +11,23 @@ export default async function Page() {
     const [initData, setInitData] = useState(null);
 
     useEffect(() => {
-        const fetchExperiences = async () => {
-            const data = await getHomeExperiences(2, 0);
-            setInitData(data);
+        const fetchData = () => {
+            // Update the loading state
+            setInitData(null);
+
+            // Fetch data from the client
+            getHomeExperiences(2, 0)
+                .then(data => {
+                    // Update state with fetched data
+                    setInitData(data);
+                })
+                .catch(error => {
+                    // Handle errors if any
+                    console.error('Error fetching data:', error);
+                });
         };
 
-        fetchExperiences();
+        fetchData();
     }, []);
 
     if (!initData) return <Loading />;

@@ -14,11 +14,11 @@ export function getSave(){
   return axios.get("http://localhost:3000/api/getSave").then((response) => response.data)
 }
 
-export function changeSave(shouldSave: boolean, postId: string){
+export function changeSave(shouldSave: boolean, expId: string){
   return axios.get("http://localhost:3000/api/changeSave",
     {
       params: {
-        postId: postId,
+        expId: expId,
         shouldSave: shouldSave
       }
     }).then((response) => response.data)
@@ -33,6 +33,17 @@ export function removePost(userId: string){
     ,}
     ).then((response) => response.data)
 
+}
+
+export function addComment(userId: string, expId: string, content: string){
+  console.log("calls got " + userId + " and content of " + content)
+   axios.post(`http://localhost:3000/api/addComment`, {
+    params: {
+      content: content,
+      userId: userId,
+      expId: expId
+    }
+  }).then(response => response.data)
 }
 
 export async function getHomeExperiences(take: number, page: number) {

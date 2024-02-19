@@ -7,13 +7,13 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: NextApiRequest) {
     const {searchParams} = new URL(req.url!);
-    const postId = searchParams.get("postId");
+    const expId = searchParams.get("expId");
     const shouldSave = searchParams.get("shouldSave") 
-    if(postId === null || shouldSave === null){
-        return new NextResponse("need to pass in postId and shouldSave", {status: 404})
+    if(expId === null || shouldSave === null){
+        return new NextResponse("need to pass in expId and shouldSave", {status: 404})
     }
     const serverSession = await auth()
-    const id = serverSession?.user.id
+    const saverId = serverSession?.user.id
     console.log(shouldSave)
     console.log(typeof(shouldSave))
     if(shouldSave === "true"){
@@ -22,10 +22,10 @@ export async function GET(req: NextApiRequest) {
         data: {
           
           user: {
-            connect: { id: id }, // Connects the Save to the User performing the save
+            connect: { id: saverId }, // Connects the Save to the User performing the save
           },
-          poster: {
-            connect: { id: postId }, // Connects the Save to the User being saved
+          exp: {
+            connect: { id: expId }, // Connects the Save to the User being saved
           }
         }
       });
@@ -33,8 +33,8 @@ export async function GET(req: NextApiRequest) {
       console.log("deleting")
       const res = await prisma.save.deleteMany({
         where: {
-          postId: postId,
-          userId: id
+          expId: expId,
+          userId: saverId
           
         }
       });

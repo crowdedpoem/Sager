@@ -3,7 +3,11 @@ import React, { useState } from 'react';
 import { FaComment } from "react-icons/fa";
 import CommentsModal from './CommentsModal';
 
-const CommentButton = () => {
+interface CommentIconProps {
+    expId: string;
+}
+
+const CommentButton = ({expId}: CommentIconProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleOpen = () => {
@@ -24,7 +28,7 @@ const CommentButton = () => {
                 <FaComment className="w-4 h-4 text-black" />
             </button>
 
-            <CommentsModal isOpen={isOpen} handleClose={handleClose} />
+            <CommentsModal expId={expId} isOpen={isOpen} handleClose={handleClose} />
         </div>
 
     );

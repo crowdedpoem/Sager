@@ -19,20 +19,25 @@ interface Exp {
 }
 
 const PostGrid: React.FC<{ exps: Exp[] }> = ({ exps }) => {
+    console.log("here is exps " + JSON.stringify(exps) )
 
     const { data, fetchNextPage } = useInfiniteQuery(
         ['query'],
-        ({ pageParam = 1 }) => {
+        ({ pageParam = 0 }) => {
             const response = getHomeExperiences(2, pageParam)
+            console.log("response is ")
+            console.log(response)
             return response
         },
         {
             getNextPageParam: (_, pages) => {
                 return pages.length + 1
             },
+            // stupid library, initial data gets replaced by pages
+            //TODO move this back to pages?
             initialData: {
-                pages: [exps],
-                pageParams: [1]
+                pages: [],
+                pageParams: [0]
             }
         }
     )
