@@ -1,17 +1,29 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { PlusIcon, CheckIcon } from '@heroicons/react/solid';
 import { IoCheckmark } from "react-icons/io5";
 import { HiOutlinePlus } from "react-icons/hi";
 import { CiBookmarkPlus } from "react-icons/ci";
 import { FaBookmark } from "react-icons/fa";
+import { changeSave } from '../../lib/calls';
 
-const AnimatedIconButton = () => {
-  const [isActive, setIsActive] = useState(false);
+interface SaveIconProps {
+  expId: string;
+  isSaved: boolean;
+}
+
+const AnimatedIconButton = ({expId, isSaved}: SaveIconProps) => {
+  const [isActive, setIsActive] = useState(isSaved);
 
   const toggleActive = () => {
+      const newValue = !isActive
+      changeSave(newValue, expId)
+   
     setIsActive(!isActive);
   };
+
+  console.log("checkmark got " + isSaved)
+
 
   return (
     <button

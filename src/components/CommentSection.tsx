@@ -4,8 +4,6 @@ import { Avatar, Card, CardHeader } from "@mui/material";
 
 export default function CommentSection(props: { comments: any }) {
   let comments = props.comments;
-  console.log("comments are")
-  console.log(comments)
 
   return (
     <>

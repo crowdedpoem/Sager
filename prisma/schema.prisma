@@ -82,18 +82,13 @@ model User {
   
   Experiences Experience[] @relation("Author")
   mySaves Save[] @relation("liker")
-  myLikes Save[] @relation("poster")
+
   tagIds String[]   @db.ObjectId
   Tags  Tag[] @relation(fields: [tagIds], references: [id])
   myComments Comment[] 
 }
 
-model Tag {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String @unique
-  userIds String[] @db.ObjectId
-  Users   User[]   @relation(fields: [userIds], references: [id])
-}
+
 
 model Experience {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
@@ -108,9 +103,26 @@ model Experience {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   user        User         @relation("Author", fields: [userId], references: [id], onDelete: Cascade)
+  likes Save[] @relation("experience")
   comments Comment[]
 }
 
+model Save {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  expId String @db.ObjectId
+  exp        Experience         @relation("experience", fields: [expId], references: [id], onDelete: Cascade)
+  user   User   @relation("liker", fields: [userId], references: [id], onDelete: Cascade) 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Tag {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+  userIds String[] @db.ObjectId
+  Users   User[]   @relation(fields: [userIds], references: [id])
+}
 model Comment{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   content String
@@ -143,12 +155,3 @@ model Pro {
   Experience   Experience @relation(fields: [ExperienceId], references: [id], onDelete: Cascade)
 }
 
-model Save {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  postId String @db.ObjectId
-  poster        User         @relation("poster", fields: [postId], references: [id], onDelete: Cascade)
-  user   User   @relation("liker", fields: [userId], references: [id], onDelete: Cascade) 
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-}

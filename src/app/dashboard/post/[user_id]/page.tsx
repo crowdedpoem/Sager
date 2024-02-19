@@ -18,6 +18,25 @@ import CommentSection from '@/components/CommentSection';
 // Create a context to hold the postId value
 const PostIdContext = createContext<string | undefined>(undefined);
 
+type Experience = {
+    id: string,
+    userId: string,
+    startDate: string,
+    title: string,
+    description: string,
+    endDate: string,
+    createdAt: string,
+    updatedAt: string,
+    pros: string[],
+    cons: string[],
+    dayEvents: string[],
+    comments: any[]
+}
+
+type Save = {
+    id: string;
+}
+
 // Custom hook to access postId value
 export const usePostId = () => useContext(PostIdContext);
 
@@ -35,31 +54,20 @@ export default function Post(
     { params }: any
 ) {
 
-    type Experience = {
-        id: string,
-        userId: string,
-        startDate: string,
-        title: string,
-        description: string,
-        endDate: string,
-        createdAt: string,
-        updatedAt: string,
-        pros: string[],
-        cons: string[],
-        dayEvents: string[],
-        comments: any[]
-    }
+    const [allExperiences, setAllExperiences] = useState<Experience[] | undefined>(undefined)
 
-
-    const {data: exps, mutate} = useSWR(params.user_id + "getExperiences", () => getExperiencesFromUserId(params.user_id));
-    const allExperiences = exps
+    const {data: dumbSol, mutate} = useSWR(params.user_id + "getExperiences", () => getExperiencesFromUserId(params.user_id));
+    const exps: Experience[] = dumbSol
+    
     const [postId, setPostId] = useState(params.user_id);
     const value = { postId, setPostId };
     
 
     //TODO add 'saved' to the original database call
-    const isSaved = useSWR(params.user_id + "isPostSaved", () => getIsSavedExperience(params.user_id))
+    const isSaved =  useSWR("saves", () => getIsSavedExperience(params.user_id))
+    const prevSaves: Save[] = isSaved.data
 
+    //TODO figure out if we want to handle stale experience data
     const deleteTodoMutation = async (id: string) => {
         console.log("hi")
             console.log(id)
@@ -82,9 +90,10 @@ export default function Post(
     const [exp, setExp] = useState<Experience | null>(null);
     const [checked, setChecked] = useState(false)
 
-    function saveToggle(userId: string, value: boolean) {
+    function saveToggle(expId: string, value: boolean) {
+        console.log(expId)
         setChecked(value)
-        changeSave(value, userId)
+        changeSave(value, expId)
     }
 
     const handleExp = (e: Experience) => {
@@ -93,24 +102,30 @@ export default function Post(
 
     //TODO break up into multiple useEffects 
     useEffect(() => {
-        if(isSaved.data){
-            setChecked(isSaved.data)
-        }
-    }, [isSaved.data])
+        if (!!exps && exp === null && !!prevSaves) {
+            setAllExperiences(exps)
+            const savedExpIds = new Set(prevSaves.map(save => save.id));
 
-    useEffect(() => {
-        if (!!allExperiences && exp === null) {
-            setExp(allExperiences[0])
+            setAllExperiences( exps.map(exp => ({
+                ...exp,
+                isSaved: savedExpIds.has(exp.id),
+            })));
                 
         }
         //TODO thsi is stupid solution, maybe server component can pass down session?
-        if(!!exp && session.data?.user.id !== null && !checkedAuth ){
+        if(!!allExperiences && session.data?.user.id !== null && !checkedAuth ){
             const viewerId = session.data?.user.id
             setIsAuth(viewerId === allExperiences[0].userId)
           
            checkedAuth = true
         }
-    })
+    }, [exps, prevSaves])
+
+    useEffect(()=> {
+        if(allExperiences !== undefined){
+            setExp(allExperiences[0])
+        }
+    }, [allExperiences])
 
     return (
         <>
@@ -125,22 +140,14 @@ export default function Post(
                             <div className="flex-grow flex h-full overflow-auto">
                                 <div className="w-1/2 overflow-auto border-r border-gray-700">
                                     <div className='flex flex-row-reverse m-5'>
-                                        { isAdmin ? <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => deleteTodoMutation(exp!.userId)}>
+                                        { isAdmin && <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => deleteTodoMutation(exp!.userId)}> 
                                         <p>admin remove</p>
-                                        </button>: <p>normie</p>
+                                        </button>
                                         }
                                         {
-                                            isAuth ? <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => setShowModal(true)}>
+                                            isAuth && <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => setShowModal(true)}>
                                                 <p>Add an Experience</p>
-                                            </button> :
-
-                                                // <button onClick={()=> saveUser(exp ? exp.userId : "")}>Save</button>
-                                                <div>
-                                                    <p>Save</p>
-                                                    <Switch checked={checked} onChange={(e) => saveToggle(exp ? exp.userId : "", e.target.checked)} inputProps={{ 'aria-label': 'controlled' }} />
-                                                </div>
-
-
+                                            </button>
                                         }
                                         {/*  */}
                                     </div>

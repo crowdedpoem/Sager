@@ -14,11 +14,11 @@ export function getSave(){
   return axios.get("http://localhost:3000/api/getSave").then((response) => response.data)
 }
 
-export function changeSave(shouldSave: boolean, postId: string){
+export function changeSave(shouldSave: boolean, expId: string){
   return axios.get("http://localhost:3000/api/changeSave",
     {
       params: {
-        postId: postId,
+        expId: expId,
         shouldSave: shouldSave
       }
     }).then((response) => response.data)
