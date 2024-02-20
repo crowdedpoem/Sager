@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
+import { addComment } from '../../lib/calls';
+import { usePostId } from '@/app/dashboard/post/[user_id]/page';
 
 interface CommentsModalProps {
+    expId: string;
     isOpen: boolean;
     handleClose: () => void;
 }
 
-const CommentsModal = ({ isOpen, handleClose }: CommentsModalProps) => {
+const CommentsModal = ({ expId, isOpen, handleClose }: CommentsModalProps) => {
+    const postId = usePostId() ?? ""
 
     const [newComment, setNewComment] = useState('');
     const handleAddComment = () => {
-        console.log("tst")
+        console.log(postId);
+        addComment(postId, expId, newComment)
     };
 
     if (!isOpen) return null;
@@ -43,7 +48,7 @@ const CommentsModal = ({ isOpen, handleClose }: CommentsModalProps) => {
                         <button
                             type="button"
                             className="inline-flex justify-center rounded-md border border-transparent bg-purple px-4 py-2 text-sm font-medium text-white"
-                            onClick={handleAddComment}
+                            onClick={() => {handleAddComment(); handleClose();}}
                         >
                             Add Comment
                         </button>

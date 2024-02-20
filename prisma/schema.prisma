@@ -85,6 +85,7 @@ model User {
   myLikes Save[] @relation("poster")
   tagIds String[]   @db.ObjectId
   Tags  Tag[] @relation(fields: [tagIds], references: [id])
+  myComments Comment[] 
 }
 
 model Tag {
@@ -107,6 +108,18 @@ model Experience {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   user        User         @relation("Author", fields: [userId], references: [id], onDelete: Cascade)
+  comments Comment[]
+}
+
+model Comment{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  content String
+  experienceId String @db.ObjectId
+  authorId String @db.ObjectId
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  Author   User   @relation(fields: [authorId], references: [id])
+  Experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
 }
 
 model DayEvent {

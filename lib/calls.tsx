@@ -35,6 +35,17 @@ export function removePost(userId: string){
 
 }
 
+export function addComment(userId: string, expId: string, content: string){
+  console.log("calls got " + userId + " and content of " + content)
+   axios.post(`http://localhost:3000/api/addComment`, {
+    params: {
+      content: content,
+      userId: userId,
+      expId: expId
+    }
+  }).then(response => response.data)
+}
+
 export async function getHomeExperiences(take: number, page: number) {
    const value = await axios.get(`http://localhost:3000/api/getHomeExperiences`, {
     params: {
