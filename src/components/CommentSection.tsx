@@ -4,17 +4,15 @@ import { Avatar, Card, CardHeader } from "@mui/material";
 
 export default function CommentSection(props: { comments: any }) {
   let comments = props.comments;
-  console.log("comments are")
-  console.log(comments)
 
   return (
     <>
-      <h1 className='font-big-shoulders-display text-2xl pb-3 flex text-gray-700 items-center justify-center pt-24'>Comment Section</h1>
+      <h1 className='font-big-shoulders-display text-2xl pb-3 flex text-gray-700 items-center justify-center pt-24'>Comments</h1>
 
 
-      <ol className="relative border-l border-purple ml-8 mt-8">
+      <ol className="relative mx-8 mt-8">
         {comments?.map((exp: any, index: number) => (
-          <Card key={index}>
+          <Card key={index} className="mb-4 pb-3">
             <CardHeader
               avatar={
                 exp.Author.image ? <Avatar aria-label="user" src={exp.Author.image} /> : <Avatar aria-label="user"> {exp.Author.name.substring(0, 1)} </Avatar>

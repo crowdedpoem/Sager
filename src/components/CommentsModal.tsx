@@ -13,6 +13,7 @@ const CommentsModal = ({ expId, isOpen, handleClose }: CommentsModalProps) => {
 
     const [newComment, setNewComment] = useState('');
     const handleAddComment = () => {
+        console.log(postId);
         addComment(postId, expId, newComment)
     };
 
@@ -47,7 +48,7 @@ const CommentsModal = ({ expId, isOpen, handleClose }: CommentsModalProps) => {
                         <button
                             type="button"
                             className="inline-flex justify-center rounded-md border border-transparent bg-purple px-4 py-2 text-sm font-medium text-white"
-                            onClick={handleAddComment}
+                            onClick={() => {handleAddComment(); handleClose();}}
                         >
                             Add Comment
                         </button>

@@ -3,7 +3,7 @@ export default function DayInTheLife(props: { items: any }) {
 
     return (
         <>
-            <h1 className='font-big-shoulders-display text-2xl pb-3 flex text-gray-700 items-center justify-center pt-24'>Day in the life section</h1>
+            <h1 className='font-big-shoulders-display text-2xl pb-3 flex text-gray-700 items-center justify-center pt-24'>Day in the Life</h1>
 
 
             <ol className="relative border-l border-purple ml-8 mt-8">

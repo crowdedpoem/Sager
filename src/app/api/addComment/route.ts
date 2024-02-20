@@ -30,7 +30,7 @@ export async function POST(request: Request) {
             comments: {
                 create: [
                     {
-                        authorId: author.id,
+                        authorId: userId,
                         content: content
                     }
                 ]
