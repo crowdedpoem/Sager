@@ -23,7 +23,7 @@ export default function SimpleInput({
         <>
             <div className="p-3 w-full">
                 <FormItem>
-                    <FormDescription>{label}</FormDescription>
+                    <FormDescription className="block text-md font-medium text-gray-900">{label}</FormDescription>
                     <FormControl>
                         <Controller
                             name={name}
