@@ -1,15 +1,25 @@
 import React from 'react';
+import AddPost from '../app/addPost/page'
+
 
 interface AddExperienceModalProps {
   isOpen: boolean;
   setShowModal: (isOpen: boolean) => void;
 }
 
+
+
 const AddExperienceModal: React.FC<AddExperienceModalProps> = ({ isOpen, setShowModal }) => {
   if (!isOpen) return null;
 
+  const handleModalState = (e: boolean) => {
+    setShowModal(e);
+  };
+
   return (
     <>
+    <div className="fixed inset-0 bg-black z-40 opacity-75" onClick={() => {setShowModal(false)}}></div>
+
       <div
         className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative w-fit max-w-7xl max-h-full">
@@ -31,29 +41,11 @@ const AddExperienceModal: React.FC<AddExperienceModalProps> = ({ isOpen, setShow
             </div>
             {/*body*/}
             <div className="relative p-6 flex-auto">
-              {/* Form items */}
-            </div>
-            {/*footer*/}
-            <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-              <button
-                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
-                onClick={() => setShowModal(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="bg-purple text-white font-bold w-24 uppercase text-sm px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
-                onClick={() => setShowModal(false)}
-              >
-                Add
-              </button>
+              <AddPost toggleModal={handleModalState}/>
             </div>
           </div>
         </div>
       </div>
-      <div className="opacity-50 fixed inset-0 z-40 bg-purple"></div>
     </>
   );
 };

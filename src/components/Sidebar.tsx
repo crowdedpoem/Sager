@@ -12,6 +12,8 @@ import AddPost from '../app/addPost/page'
 import { FaCog } from 'react-icons/fa'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import AddExperienceModal from '@/components/AddExperienceModal';
+
 const App = () => {
     const [open, setOpen] = useState(true);
     const [showModal, setShowModal] = useState(false);
@@ -45,29 +47,8 @@ const App = () => {
                         </button>
                     </div>
 
-                    {showModal ? (
-                        <>
-                            <div
-                                className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                                <div className="relative w-fit max-w-7xl h-full">
-                                    {/*content*/}
-                                    <div className="border-0 rounded-lg shadow-lg flex flex-col w-fit bg-white outline-none focus:outline-none">
-                                        {/*header*/}
-                                        <div className="flex items-start sticky top-0 overflow-hidden bg-white justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                                            <h3 className="text-3xl font-semibold">
-                                                Add Your Experiences
-                                            </h3>
-                                        </div>
-                                        {/*body*/}
-                                        <AddPost toggleModal={handleModalState}/>
-                                        {/*footer*/}
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="opacity-50 fixed inset-0 z-40 bg-purple"></div>
-                        </>
-                    ) : null}
+                    <AddExperienceModal isOpen={showModal} setShowModal={setShowModal} />
+
 
                     {sideBarTopData.map((group, index) => (
                         <div key={index} className='my-10' >
