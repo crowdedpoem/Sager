@@ -27,11 +27,8 @@ export default async function Page() {
                 <div className="">
                     <SearchServerParams />
                 </div>
-                <Suspense fallback={<Loading />}>
-                    <div className="flex flex-wrap -mx-1 lg:-mx-4">
-                        <PostGrid exps={initData} />
-                    </div>
-                </Suspense>
+                
+                <PostGrid exps={initData} />
 
             </div>
         </>

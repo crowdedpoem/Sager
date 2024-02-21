@@ -51,20 +51,14 @@ const PostGrid: React.FC<{ exps: Exp[] }> = ({ exps }) => {
 
     return (
         <>
-            <div className="container my-12 mx-auto px-4 md:px-12">
-                <div className=" flex flex-wrap mb-4">
-
+            <Suspense fallback={<Loading />}>
+                <div className="flex flex-wrap w-full">
+                    {posts.map((exp, index) => {
+                        if (index === posts.length) return <PostCard key={index} exp={exp} ref={ref} />
+                        return <PostCard key={index} exp={exp} ref={ref} />
+                    })}
                 </div>
-                <Suspense fallback={<Loading />}>
-                    <div className="flex flex-wrap -mx-1 lg:-mx-4">
-                        {posts.map((exp, index) => {
-                            if (index === posts.length) return <PostCard key={index} exp={exp} ref={ref} />
-                            return <PostCard key={index} exp={exp} ref={ref} />
-                        })}
-                    </div>
-                </Suspense>
-
-            </div>
+            </Suspense>
         </>
 
     );
