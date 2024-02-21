@@ -13,8 +13,7 @@ import { UserRole } from '@prisma/client';
 import Switch from '@mui/material/Switch';
 import DayInTheLife from '@/components/DayInTheLife';
 import AddExperienceModal from '@/components/AddExperienceModal';
-import { getExperiencesFromUserId } from "../../../../../lib/calls";
-import { experienceSchema } from "@/validators/experience";
+import { singleExperience } from "@/validators/experience";
 import { z } from "zod";
 
 type Experience = {
@@ -35,7 +34,7 @@ export default function Post(
     { params }: any
 ) {
 
-type Experience = z.infer<typeof experienceSchema>
+    type Experience = z.infer<typeof singleExperience>
 
     // need to get whether user saved this post
 
@@ -49,7 +48,7 @@ type Experience = z.infer<typeof experienceSchema>
 
     const deleteTodoMutation = async (id: string) => {
         console.log("hi")
-            console.log(id)
+        console.log(id)
         try {
             const serverResp = await mutate(
                 removePost(id),
@@ -80,7 +79,7 @@ type Experience = z.infer<typeof experienceSchema>
 
     //TODO break up into multiple useEffects 
     useEffect(() => {
-        if(isSaved.data){
+        if (isSaved.data) {
             setChecked(isSaved.data)
         }
     }, [isSaved.data])
@@ -88,14 +87,14 @@ type Experience = z.infer<typeof experienceSchema>
     useEffect(() => {
         if (!!allExperiences && exp === null) {
             setExp(allExperiences[0])
-                
+
         }
         //TODO thsi is stupid solution, maybe server component can pass down session?
-        if(!!exp && session.data?.user.id !== null && !checkedAuth ){
+        if (!!exp && session.data?.user.id !== null && !checkedAuth) {
             const viewerId = session.data?.user.id
             setIsAuth(viewerId === allExperiences[0].userId)
-          
-           checkedAuth = true
+
+            checkedAuth = true
         }
     })
 
@@ -112,9 +111,9 @@ type Experience = z.infer<typeof experienceSchema>
                             <div className="flex-grow flex h-full overflow-auto">
                                 <div className="w-1/2 overflow-auto border-r border-gray-700">
                                     <div className='flex flex-row-reverse m-5'>
-                                        { isAdmin ? <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => deleteTodoMutation(exp!.userId)}>
-                                        <p>admin remove</p>
-                                        </button>: <p>normie</p>
+                                        {isAdmin ? <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => deleteTodoMutation(exp!.userId)}>
+                                            <p>admin remove</p>
+                                        </button> : <p>normie</p>
                                         }
                                         {
                                             isAuth ? <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => setShowModal(true)}>
@@ -135,7 +134,7 @@ type Experience = z.infer<typeof experienceSchema>
                                     <AddExperienceModal isOpen={showModal} setShowModal={setShowModal} />
 
                                     {Array.isArray(allExperiences) && allExperiences.length === 0 ? <h1>user has not posted their career!</h1> : <Timeline items={allExperiences} expState={handleExp} />}
-                                   
+
 
                                 </div>
 
