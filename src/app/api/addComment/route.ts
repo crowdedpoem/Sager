@@ -4,18 +4,18 @@ import { auth } from "@/auth";
 
 export async function POST(request: Request) {
     // the request has content and userId 
-    const authorSession = await auth()
-    const authorEmail = authorSession?.user?.email ?? ""
+    const visitorSession = await auth()
+    const visitorEmail = visitorSession?.user?.email ?? ""
     const body = await request.json();
     const params = body.params
 
     const content = params["content"]
-    const userId = params["userId"]
+    // const userId = params["userId"]
     const expId = params["expId"]
 
-    const author = await prisma.user.findUnique({
+    const visitor = await prisma.user.findUnique({
         where: {
-            email: authorEmail
+            email: visitorEmail
         }, select: {
             id: true
         }
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
             comments: {
                 create: [
                     {
-                        authorId: userId,
+                        authorId: visitor.id,
                         content: content
                     }
                 ]

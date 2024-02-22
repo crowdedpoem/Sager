@@ -14,7 +14,7 @@ const CommentsModal = ({ expId, isOpen, handleClose }: CommentsModalProps) => {
     const [newComment, setNewComment] = useState('');
     const handleAddComment = () => {
         console.log(postId);
-        addComment(postId, expId, newComment)
+        addComment(expId, newComment)
     };
 
     if (!isOpen) return null;
