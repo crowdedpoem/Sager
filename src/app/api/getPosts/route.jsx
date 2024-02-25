@@ -1,8 +1,7 @@
 // getPost/route.jsx
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 
-const prisma = new PrismaClient();
 
 export async function GET(request, response) {
     let isDistinctParam = request.nextUrl.searchParams.get("isDistinct");
