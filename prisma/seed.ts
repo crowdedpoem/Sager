@@ -1,5 +1,5 @@
 const users = [{
-  email: "alexandra_garcia@example.com",
+  views: 0, email: "alexandra_garcia@example.com",
   name: "Alexandra Garcia",
   Experiences: {
     create: [
@@ -36,7 +36,7 @@ const users = [{
 
 
  {
-  email: "dr_johndoe@example.com",
+  views: 0, email: "dr_johndoe@example.com",
   name: "Dr. John Doe",
   Experiences: {
     create: [
@@ -122,7 +122,7 @@ const users = [{
 },
 
 {
-  email: "lawyerjane@example.com",
+  views: 0, email: "lawyerjane@example.com",
   name: "Jane Smith, Esq.",
   Experiences: {
     create: [
@@ -181,7 +181,7 @@ const users = [{
   }
 }, 
 {
-  email: "constructionboss@example.com",
+  views: 0, email: "constructionboss@example.com",
   name: "Tom Johnson",
   Experiences: {
     create: [
@@ -240,7 +240,7 @@ const users = [{
   }
 },
 {
-  email: "counselorjenny@example.com",
+  views: 0, email: "counselorjenny@example.com",
   name: "Jennifer Thompson",
   Experiences: {
     create: [
@@ -299,7 +299,7 @@ const users = [{
   }
 },
 {
-  email: "drsmith@example.com",
+  views: 0, email: "drsmith@example.com",
   name: "Dr. Emily Smith",
   Experiences: {
     create: [
@@ -358,7 +358,7 @@ const users = [{
   }
 },
 {
-  email: "financepro@example.com",
+  views: 0, email: "financepro@example.com",
   name: "Alex Johnson",
   Experiences: {
     create: [
@@ -417,7 +417,7 @@ const users = [{
   }
 },
 {
-  email: "plumbexpert@example.com",
+  views: 0, email: "plumbexpert@example.com",
   name: "David Martinez",
   Experiences: {
     create: [
@@ -476,7 +476,7 @@ const users = [{
   }
 },
 {
-  email: "hardwareguru@example.com",
+  views: 0, email: "hardwareguru@example.com",
   name: "Michael Chang",
   Experiences: {
     create: [
@@ -535,7 +535,7 @@ const users = [{
   }
 },
 {
-  email: "professorjane@example.com",
+  views: 0, email: "professorjane@example.com",
   name: "Dr. Jane Williams",
   Experiences: {
     create: [
@@ -599,27 +599,26 @@ const users = [{
 
 
 
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
 
-async function main() {
-  await prisma.user.deleteMany();
+
+// async function main() {
+//   await prisma.user.deleteMany();
   
-  for(var i = 0; i < users.length; i++){
-    const user = users[i]
-    await prisma.user.create({
-      data: user
-    })
-  }
+//   for(var i = 0; i < users.length; i++){
+//     const user = users[i]
+//     await prisma.user.create({
+//       data: user
+//     })
+//   }
 
-}
+// }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit();
-  });
+// main()
+//   .then(async () => {
+//     await prisma.$disconnect();
+//   })
+//   .catch(async (e) => {
+//     console.error(e);
+//     await prisma.$disconnect();
+//     process.exit();
+//   });

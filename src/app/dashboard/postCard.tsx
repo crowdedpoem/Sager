@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React, { forwardRef } from 'react';
+import { incrementView } from "../../../lib/calls";
 
 interface Exp {
     userId: number;
@@ -10,6 +11,10 @@ interface Exp {
 }
 interface PostCardProps {
     exp: Exp;
+}
+
+function addView(postClicked: number) {
+    incrementView(postClicked)
 }
 
 const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>((props, ref) => {
@@ -38,7 +43,7 @@ const PostCard = React.forwardRef<HTMLDivElement, PostCardProps>((props, ref) =>
                     </div>
                     <div className="group relative justify-between h-32">
                         <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
-                            <a href={`/dashboard/post/${exp.userId}`}>
+                            <a onClick={(e) => addView(exp.userId)} href={`/dashboard/post/${exp.userId}`}>
                                 {/* <span className="absolute inset-0" /> */}
                                 <span dangerouslySetInnerHTML={{ __html: exp.title }}></span>
                             </a>
