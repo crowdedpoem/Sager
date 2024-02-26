@@ -599,27 +599,26 @@ const users = [{
 
 
 
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
 
-async function main() {
-  await prisma.user.deleteMany();
+
+// async function main() {
+//   await prisma.user.deleteMany();
   
-  for(var i = 0; i < users.length; i++){
-    const user = users[i]
-    await prisma.user.create({
-      data: user
-    })
-  }
+//   for(var i = 0; i < users.length; i++){
+//     const user = users[i]
+//     await prisma.user.create({
+//       data: user
+//     })
+//   }
 
-}
+// }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit();
-  });
+// main()
+//   .then(async () => {
+//     await prisma.$disconnect();
+//   })
+//   .catch(async (e) => {
+//     console.error(e);
+//     await prisma.$disconnect();
+//     process.exit();
+//   });
