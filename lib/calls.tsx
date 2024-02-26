@@ -117,6 +117,12 @@ export function getUsersWithPath(career1: string, career2: string){
       career2: career2
     }
   }).then(response => response.data);
+}
+
+export async function getTopPosts(){
+  const data = await axios.get(`http://localhost:3000/api/getTopPosts`)
+  return data.data
+}
 
 export function incrementView(clickedPost: number){
   return  axios.get(`http://localhost:3000/api/incrementView`, {
