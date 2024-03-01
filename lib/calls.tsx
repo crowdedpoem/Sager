@@ -35,16 +35,29 @@ export function removePost(userId: string){
 
 }
 
-export async function getHomeExperiences(take: number, page: number) {
-   const value = await axios.get(`http://localhost:3000/api/getHomeExperiences`, {
+export function getHomeExperiences(take: number, page: number) {
+   return axios.get(`http://localhost:3000/api/getHomeExperiences`, {
     params: {
       isDistinct: true,
       page: page,
       take: take
     },
 
-  })
-  return value.data
+  }).then((response) => response.data)
+}
+
+export function getSearchedExperiences(query: string): (take: number, page: number) => Promise<any>{
+  return  (take: number, page: number) => {
+    return axios.get(`http://localhost:3000/api/getSearchedExperiences`, {
+      params: {
+        title: query,
+        page: page,
+        take: take
+      }
+    }).then((response) => response.data)
+    console.log("finished call to searchExperience")
+    
+  }
 }
 
 export async function getAllExperiences() {
@@ -60,7 +73,7 @@ export async function getAllExperiences() {
 export async function getFilteredExperinces(query: string) {
     const allExperiences = await axios.get(`http://localhost:3000/api/getPosts`, {
         params: {
-            isDistinct: false,
+            isDistinct: true,
         }
     });
 

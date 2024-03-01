@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     return new NextResponse("you can't edit other peoples stuff", {status: 403})
   }
   const data = removeWhitespace(body["experience"]);
-  console.log(data);
+  // console.log(data);
   const tag = body["tag"]
   for (const experience of data) {
     // console.log("in post say hi");

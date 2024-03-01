@@ -47,8 +47,6 @@ export default function Post(
     const isSaved = useSWR(params.user_id + "isPostSaved", () => getIsSavedExperience(params.user_id))
 
     const deleteTodoMutation = async (id: string) => {
-        console.log("hi")
-        console.log(id)
         try {
             const serverResp = await mutate(
                 removePost(id),

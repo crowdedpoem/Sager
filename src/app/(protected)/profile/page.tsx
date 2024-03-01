@@ -76,12 +76,3 @@ export default async function Page() {
 
     );
 }
-
-
-
-  function getRandomShade(): string {
-    const possibleWidths = [800, 700, 600, 500];
-    const randomIndex = Math.floor(Math.random() * possibleWidths.length);
-    console.log(`bg-red-${possibleWidths[randomIndex]}`)
-    return `bg-red-${possibleWidths[randomIndex]}`;
-  }

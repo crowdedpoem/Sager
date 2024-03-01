@@ -9,7 +9,7 @@ const CommentsModal = ({ isOpen, handleClose }: CommentsModalProps) => {
 
     const [newComment, setNewComment] = useState('');
     const handleAddComment = () => {
-        console.log("tst")
+        // console.log("tst")
     };
 
     if (!isOpen) return null;

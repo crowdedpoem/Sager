@@ -6,7 +6,6 @@ import { Prosto_One } from "next/font/google";
 export default function Layout(props: { pros: any; cons: any; }) {
     let pros = props.pros;
     let cons = props.cons;
-    // console.log(pros)
 
     return (
         <>

@@ -27,9 +27,6 @@ export async function GET(req: NextApiRequest) {
 
     });
 
-    console.log("page is " + page + " take is " + take)
-    // console.log("results are " + JSON.stringify(recentPosts))
-
 
     return NextResponse.json(recentPosts);
 }

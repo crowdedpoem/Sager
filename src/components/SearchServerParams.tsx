@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { normalize } from "@/app/libs/normalize";
 import { useRef } from "react";
 
+
 const SearchServerParams = () => {
     const [inputValue, setInputValue] = useState("");
     const [debouncedValue, setDebouncedValue] = useState("");
@@ -19,6 +20,7 @@ const SearchServerParams = () => {
             let params = new URLSearchParams(window.location.search);
             if (newDebouncedValue.length > 0) {
                 params.set("search", newDebouncedValue);
+                // const response = getSearchedExperiences(newDebouncedValue);
             } else {
                 params.delete("search");
             }

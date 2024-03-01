@@ -73,7 +73,6 @@ export default async function Page() {
           }
       }
     }
-    console.log(retData)
     return retData
   }
       

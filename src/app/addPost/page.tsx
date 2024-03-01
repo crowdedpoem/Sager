@@ -43,7 +43,7 @@ function removeExpFromForm(remove: UseFieldArrayRemove, form: UseFormReturn<inpu
 }
 
 function removeExpFromLS(form: UseFormReturn<input>, numExp: number) {
-  console.log("the index given to remove exp from ls is " + numExp)
+  // console.log("the index given to remove exp from ls is " + numExp)
   localStorage.removeItem(`experience.${numExp}.title`)
   localStorage.removeItem(`experience.${numExp}.description`)
   localStorage.removeItem(`experience.${numExp}.startDate`)
@@ -106,7 +106,7 @@ export default function AddPost(props : {toggleModal: any}) {
     sendToAPI["experience"] = data["experience"];
     sendToAPI["email"] = session?.user?.email ?? "bad";
     sendToAPI["tag"] = data["tag"]
-    console.log(sendToAPI);
+    // console.log(sendToAPI);
 
     try {
       await fetch("/api/addPost", {
