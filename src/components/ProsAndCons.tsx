@@ -23,7 +23,7 @@ export default function Layout(props: { pros: any; cons: any; }) {
                                     // <li key={index} className="text-[15px] list-disc">
                                     //     {pro.description}
                                     // </li>
-                                    <details className="p-4 [&_svg]:open:-rotate-180" open>
+                                    <details key={index} className="p-4 [&_svg]:open:-rotate-180" open>
                                         <summary className="flex cursor-pointer list-none items-center gap-4">
                                             <div>
                                                 <svg className="rotate-0 transform text-purple transition-all duration-300" fill="none" height="20" width="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
@@ -43,7 +43,7 @@ export default function Layout(props: { pros: any; cons: any; }) {
                                 CONS
                             </h2>
                             {cons?.map((con: any, index: number) => (
-                                <details className="p-4 [&_svg]:open:-rotate-180" open>
+                                <details key={index} className="p-4 [&_svg]:open:-rotate-180" open>
                                     <summary className="flex cursor-pointer list-none items-center gap-4">
                                         <div>
                                             <svg className="rotate-0 transform text-purple transition-all duration-300" fill="none" height="20" width="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">

@@ -93,7 +93,7 @@ const SearchServerParams = () => {
                 <div className="flex flex-col pl-4 space-y-1"> {/* Adjusted for vertical stacking */}
                     {debouncedValue && (
                         <span className="text-sm font-medium text-gray-700">
-                            Showing results for "{debouncedValue}" <br />
+                            Showing results for {debouncedValue} <br />
                         </span>
                     )}
                     {/* <span className="text-sm font-medium text-gray-700">7 results</span> */}
