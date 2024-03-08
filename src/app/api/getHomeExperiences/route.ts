@@ -1,8 +1,8 @@
 import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
-import { NextApiRequest } from 'next';
+import { NextRequest } from "next/server";
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url!);
     const page = Number(searchParams.get("page") ?? "0")

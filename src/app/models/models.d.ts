@@ -7,6 +7,10 @@ declare module 'next-auth/jwt' {
      
     role: UserRole
     }
+
+    interface Session{
+        token: string
+    }
 }
 
 declare module 'next-auth' {

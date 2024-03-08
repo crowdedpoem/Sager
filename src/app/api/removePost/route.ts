@@ -1,11 +1,11 @@
 import prisma from "@/app/libs/prismadb";
 import { auth } from "@/auth";
 import { UserRole } from "@prisma/client";
-import { NextApiRequest } from 'next';
+import { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 
-export async function DELETE(req: NextApiRequest) {
+export async function DELETE(req: NextRequest) {
     const {searchParams} = new URL(req.url!);
     const userId = searchParams.get("userId");
     if(userId === null){

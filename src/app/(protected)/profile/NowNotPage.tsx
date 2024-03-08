@@ -1,25 +1,24 @@
-import axios from "axios";
-// import { useState, useEffect } from "react";
-
 import { Suspense } from 'react'
 import Link from 'next/link';
 import Loading from "@/app/dashboard/loading";
-
-import { getAllExperiences, getSave } from "../../../../lib/calls";
+import { getSave } from "../../../../lib/calls";
 
 
 export default async function Page() {
 
     const savedExps = await getSave();
-    
+    if (!savedExps) {
+        return <h1>No Saved Experiences Retrieved</h1>
+    }
 
     return (
         <>
+            <Suspense fallback={<Loading />} >
             <div className="container my-12 mx-auto px-4 md:px-12">
                 <div className=" flex flex-wrap mb-4">
                 <h1>Your saved posts</h1>
                 </div>
-                <Suspense fallback={<Loading />}>
+           
                     <div className="flex flex-wrap -mx-1 lg:-mx-4">
                 
                         {savedExps?.map((exp: any) => (
@@ -69,9 +68,10 @@ export default async function Page() {
                             </div>
                         ))}
                     </div>
-                </Suspense>
+        
 
             </div>
+            </Suspense>
         </>
 
     );

@@ -14,24 +14,6 @@ type input = z.infer<typeof formSchema>;
 type singleExp = z.infer<typeof singleExperience>;
 type appendType = {experience: singleExp}
 
-function persistExperiences(append: UseFieldArrayAppend<input>) {
-  if (localStorage.getItem("numExperience") === null) {
-    localStorage.setItem("numExperience", "1")
-  }
-  const numExp = Number(localStorage.getItem("numExperience"))
-  for (let i = 1; i < numExp; i++) {
-    append({
-      title: "",
-      description: "",
-      startDate: dayjs(),
-      endDate: dayjs(),
-      pros: [{ title: "", description: "" }],
-      cons: [{ title: "", description: "" }],
-      dayEvents: [{ title: "", description: "" }],
-    })
-  };
-}
-
 function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -64,7 +46,9 @@ function removeExpFromLS(form: UseFormReturn<input>, numExp: number) {
   localStorage.setItem("numExperience", String(prev - 1))
 }
 
-export default function AddPost(props : {toggleModal: any}) {
+
+
+export default function AddPost(props : {toggleModal: (e: boolean) => void}) {
   type input = z.infer<typeof formSchema>;
   const form = useForm<input>({
     defaultValues: {
@@ -95,9 +79,27 @@ export default function AddPost(props : {toggleModal: any}) {
     name: "experience",
   });
 
+  function persistExperiences() {
+    if (localStorage.getItem("numExperience") === null) {
+      localStorage.setItem("numExperience", "1")
+    }
+    const numExp = Number(localStorage.getItem("numExperience"))
+    for (let i = 1; i < numExp; i++) {
+      append({
+        title: "",
+        description: "",
+        startDate: dayjs(),
+        endDate: dayjs(),
+        pros: [{ title: "", description: "" }],
+        cons: [{ title: "", description: "" }],
+        dayEvents: [{ title: "", description: "" }],
+      })
+    };
+  }
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      persistExperiences(append)
+      persistExperiences()
     }
   }, [form]);
 
