@@ -1,4 +1,4 @@
-import NextAuth from "next-auth"
+import NextAuth, { Session } from "next-auth"
 import {PrismaAdapter} from "@auth/prisma-adapter"
 import authConfig from "@/auth.config"
 import prisma from "@/app/libs/prismadb"
@@ -31,7 +31,7 @@ export const {
     token.image = dbUser.image
     return token
   },
-  async session({ session, token }) {
+  async session({ session, token}: {session: Session, token?: any}) {
     if(token && session.user){
       session.user.image = token.image
       session.user.role = token.role

@@ -7,5 +7,6 @@ const GOOGLE_SECRET = process.env.GOOGLE_SECRET!
 
 export default {
     providers: [Google({clientId: GOOGLE_ID,
-        clientSecret: GOOGLE_SECRET})]
+        clientSecret: GOOGLE_SECRET})],
+    secret: process.env.NEXT_PUBLIC_SECRET
 } satisfies NextAuthConfig

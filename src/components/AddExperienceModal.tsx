@@ -1,5 +1,5 @@
 import React from 'react';
-import AddPost from '../app/addPost/page'
+import AddPost from '../app/addPost/addPost'
 
 
 interface AddExperienceModalProps {

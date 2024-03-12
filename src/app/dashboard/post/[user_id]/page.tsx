@@ -25,8 +25,18 @@ type Experience = {
     endDate: string,
     createdAt: string,
     updatedAt: string,
-    pros: string[],
-    cons: string[]
+    pros: {
+        title: string;
+        description: string;
+    }[],
+    cons: {
+        title: string;
+        description: string;
+    }[],
+    dayEvents: {
+        title: string;
+        description: string;
+    }[]
 }
 
 
@@ -34,7 +44,6 @@ export default function Post(
     { params }: any
 ) {
 
-    type Experience = z.infer<typeof singleExperience>
 
     // need to get whether user saved this post
 
@@ -46,18 +55,18 @@ export default function Post(
 
     const isSaved = useSWR(params.user_id + "isPostSaved", () => getIsSavedExperience(params.user_id))
 
-    const deleteTodoMutation = async (id: string) => {
-        console.log("hi")
-        console.log(id)
-        try {
-            const serverResp = await mutate(
-                removePost(id),
-            )
-            setExp(null)
-        } catch (err) {
-            console.log("error")
-        }
-    }
+    // const deleteTodoMutation = async (id: string) => {
+    //     console.log("hi")
+    //     console.log(id)
+    //     try {
+    //         const serverResp = await mutate(
+    //             removePost(id),
+    //         )
+    //         setExp(null)
+    //     } catch (err) {
+    //         console.log("error")
+    //     }
+    // }
 
     const session = useSession()
     const isAdmin = session.data?.user.role === UserRole.ADMIN
@@ -111,7 +120,9 @@ export default function Post(
                             <div className="flex-grow flex h-full overflow-auto">
                                 <div className="w-1/2 overflow-auto border-r border-gray-700">
                                     <div className='flex flex-row-reverse m-5'>
-                                        {isAdmin ? <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} onClick={() => deleteTodoMutation(exp!.userId)}>
+                                        {isAdmin ? <button className={`py-2 my-2 flex items-center justify-center w-48 font-semibold text-gray-900 outline outline-purple rounded-lg hover: bg-gray-400 bg-white`} 
+                                        // onClick={() => deleteTodoMutation(exp!.userId)}
+                                        >
                                             <p>admin remove</p>
                                         </button> : <p>normie</p>
                                         }

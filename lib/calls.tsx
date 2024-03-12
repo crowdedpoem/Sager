@@ -1,8 +1,11 @@
 import axios from "axios";
 import { normalize } from "@/app/libs/normalize";
 
+
+const baseUrl = process.env.NEXT_PUBLIC_HOST_NAME as string
+
 export function getIsSavedExperience(postId: string){
-  return axios.get("http://localhost:3000/api/isSave",
+  return axios.get(`/api/isSave`,
     {
       params: {
         postId: postId
@@ -11,11 +14,11 @@ export function getIsSavedExperience(postId: string){
 }
 
 export function getSave(){
-  return axios.get("http://localhost:3000/api/getSave").then((response) => response.data)
+  return axios.get(`/api/getSave`).then((response) => response.data)
 }
 
 export function changeSave(shouldSave: boolean, postId: string){
-  return axios.get("http://localhost:3000/api/changeSave",
+  return axios.get(`/api/changeSave`,
     {
       params: {
         postId: postId,
@@ -25,7 +28,7 @@ export function changeSave(shouldSave: boolean, postId: string){
 }
 
 export function removePost(userId: string){
-    return axios.delete("http://localhost:3000/api/removePost"
+    return axios.delete(`/api/removePost`
     , {
         params: {
         userId: userId,
@@ -36,7 +39,7 @@ export function removePost(userId: string){
 }
 
 export async function getHomeExperiences(take: number, page: number) {
-   const value = await axios.get(`http://localhost:3000/api/getHomeExperiences`, {
+   const value = await axios.get(`/api/getHomeExperiences`, {
     params: {
       isDistinct: true,
       page: page,
@@ -48,7 +51,7 @@ export async function getHomeExperiences(take: number, page: number) {
 }
 
 export async function getAllExperiences() {
-    const allDistinctExperiences = await axios.get(`http://localhost:3000/api/getPosts`, {
+    const allDistinctExperiences = await axios.get(`/api/getPosts`, {
         params: {
             isDistinct: true,
         }
@@ -58,7 +61,7 @@ export async function getAllExperiences() {
 }
 
 export async function getFilteredExperinces(query: string) {
-    const allExperiences = await axios.get(`http://localhost:3000/api/getPosts`, {
+    const allExperiences = await axios.get(`/api/getPosts`, {
         params: {
             isDistinct: false,
         }
@@ -93,7 +96,7 @@ export async function getFilteredExperinces(query: string) {
 }
 
 export  function getExperiencesFromUserId (userId: string) {
-    return axios.get(`http://localhost:3000/api/getPositions`, {
+    return axios.get(`/api/getPositions`, {
     params: {
       userId: userId,
     },
@@ -102,7 +105,7 @@ export  function getExperiencesFromUserId (userId: string) {
 }
 
 export function getExperiencesFromTitle(title: string){
-    return axios.get(`http://localhost:3000/api/getExperiencesForTitle`, {
+    return axios.get(`/api/getExperiencesForTitle`, {
       params:{
         title: title
       }
@@ -110,7 +113,7 @@ export function getExperiencesFromTitle(title: string){
 }
 
 export function getUsersWithPath(career1: string, career2: string){
-  return  axios.get(`http://localhost:3000/api/getUsersWithPath`,
+  return  axios.get(`/api/getUsersWithPath`,
   {
     params: {
       career1: career1,

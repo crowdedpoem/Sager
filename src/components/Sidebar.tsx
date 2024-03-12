@@ -8,7 +8,7 @@ import {
 } from 'react-icons/bs'
 import { AiFillFire, AiFillMessage, } from 'react-icons/ai'
 import { MdNightlightRound, MdFeedback } from 'react-icons/md'
-import AddPost from '../app/addPost/page'
+import AddPost from '../app/addPost/addPost'
 import { FaCog } from 'react-icons/fa'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
